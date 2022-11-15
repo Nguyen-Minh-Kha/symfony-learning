@@ -8,7 +8,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class UserController extends AbstractController
 {
-    #[Route('/connexion', name: 'app_user_connexion')]
+    #[Route('/connexion', name: 'app_user_connexion', methods: ['GET'])]
     public function connexion(): Response
     {
         return new Response('Conexion');
