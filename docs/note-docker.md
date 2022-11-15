@@ -27,5 +27,17 @@ bin/sf console do:da:cr
 ## make controller
 
 ```
-bin/sf console ma:con home
+bin/sf console ma:con <name of controller>
+```
+
+## make entity / repository
+
+```
+bin/sf console ma:en <name of entity>
+```
+
+## update db
+
+```
+bin/sf console do:sc:up --force
 ```
