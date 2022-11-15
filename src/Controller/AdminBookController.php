@@ -93,4 +93,17 @@ class AdminBookController extends AbstractController
             return $this->redirectToRoute('app_AdminBookController_list');
         }
     }
+
+    #[Route('/admin/book/{id}/delete', name: 'app_AdminBookController_delete', methods: ['GET'])]
+    public function delete(Request $request, BookRepository $repository, int $id)
+    {
+        if ($request->isMethod(Request::METHOD_GET)) {
+
+            $book = $repository->find($id);
+
+            $repository->remove($book, true);
+
+            return $this->redirectToRoute('app_AdminBookController_list');
+        }
+    }
 }
