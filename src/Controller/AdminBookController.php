@@ -12,13 +12,13 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class AdminBookController extends AbstractController
 {
-    #[Route('/admin/book', name: 'app_admin_book')]
-    public function index(): Response
-    {
-        return $this->render('admin_book/index.html.twig', [
-            'controller_name' => 'AdminBookController',
-        ]);
-    }
+    // #[Route('/admin/book', name: 'app_admin_book')]
+    // public function index(): Response
+    // {
+    //     return $this->render('admin_book/index.html.twig', [
+    //         'controller_name' => 'AdminBookController',
+    //     ]);
+    // }
 
     #[Route('/admin/book/create', name: 'app_admin_book_create', methods: ['GET', 'POST'])]
     public function create(Request $request, BookRepository $repository): Response
@@ -48,7 +48,17 @@ class AdminBookController extends AbstractController
 
             $repository->save($book, true);
 
-            return $this->redirectToRoute('app_admin_book');
+            return $this->redirectToRoute('app_admin_book_list');
+        }
+    }
+
+    #[Route('/admin/book', name: 'app_admin_book_list', methods: ['GET'])]
+    public function list(Request $request, BookRepository $repository): Response
+    {
+        if ($request->isMethod(Request::METHOD_GET)) {
+            $books = $repository->findAll();
+
+            return $this->render('admin_book/list.html.twig', ['books' => $books]);
         }
     }
 }
