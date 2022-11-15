@@ -13,7 +13,9 @@ extension=pdo_mysql
 ## commands
 
 create new project
+
 start server
+
 stop server
 
 ```
