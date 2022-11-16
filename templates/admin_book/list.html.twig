@@ -1,16 +1,40 @@
 {% extends 'list-book.html.twig' %}
 
 {% block listing %}
-
+<div class="table-wrapper">
+<table class="fl-table">
+    <thead>
+        <tr>
+            <th> Id </th>
+            <th> Title </th>
+            <th> Created at </th>
+            <th> Updated at </th>
+            <th> Actions </th>
+        </tr>
+    </thead>
+    <tbody>
 {% for book in books %}
-    <h2>{{ book.title }}</h2>
-    <ul>
-        <li>{{ book.genre }}</li>
-        <li>{{ book.description }}</li>
-        <li>{{ book.createdAt|date('d-m-Y') }}</li>
-        <li>{{ book.updatedAt|date('d-m-Y') }}</li>
-    </ul>
-{% endfor %}
 
+        <tr>
+            <td>{{ book.id }}</td>
+            <td>{{ book.title }}</td>
+            <td>{{ book.createdAt|date('d-m-Y') }}</td>
+            <td>{{ book.updatedAt|date('d-m-Y') }}</td>
+            <td> 
+                <a href="{{ path('app_AdminBookController_update', {id: book.id}) }}">
+                <i class="fa-solid fa-square-pen"></i>
+                </a>
+
+                <a href="{{ path('app_AdminBookController_delete', {id: book.id}) }}">
+                <i class="fa-solid fa-trash"></i>
+                </a>
+
+            </td>
+        </tr>
+
+{% endfor %}
+    <tbody>
+</table>
+</div>
 {% endblock %}
 
