@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class AdminBookController extends AbstractController
 {
@@ -69,11 +70,21 @@ class AdminBookController extends AbstractController
 
             $book = $repository->find($id);
 
+            // throws error 404
+            if (!$book) {
+                throw new NotFoundHttpException("book with $id not found");
+            }
+
             // render update form template
             return $this->render('admin_book/update.html.twig', ["book" => $book]);
         } elseif ($request->isMethod(Request::METHOD_POST)) {
 
             $book = $repository->find($id);
+
+            // throws error 404
+            if (!$book) {
+                throw new NotFoundHttpException("book with $id not found");
+            }
 
             // get form data with verification
             $title = $request->request->has('title') ? $request->request->get('title') : false;
