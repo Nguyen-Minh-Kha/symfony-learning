@@ -25,11 +25,11 @@
                         <td>{{ user.createdAt|date('d-m-Y') }}</td>
                         <td>{{ user.updatedAt|date('d-m-Y') }}</td>
                         <td> 
-                            <a href="{{ path('app_AdminBookController_update', {id: user.id}) }}">
+                            <a href="{{ path('app_AdminUserController_update', {id: user.id}) }}">
                             <i class="fa-solid fa-square-pen"></i>
                             </a>
 
-                            <a href="{{ path('app_AdminBookController_delete', {id: user.id}) }}">
+                            <a href="{{ path('app_AdminUserController_delete', {id: user.id}) }}">
                             <i class="fa-solid fa-trash"></i>
                             </a>
 

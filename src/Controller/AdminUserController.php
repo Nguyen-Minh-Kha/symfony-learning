@@ -16,37 +16,30 @@ class AdminUserController extends AbstractController
     #[Route('/admin/users/create', name: "app_AdminUserController_create", methods: ['GET', 'POST'])]
     public function create(Request $request, UserRepository $userRepository): Response
     {
-        if ($request->isMethod(Request::METHOD_GET)) {
+        //create form and render 
+        $form = $this->createForm(UserType::class);
 
-            //create form and render 
-            $form = $this->createForm(UserType::class);
+        $form->handleRequest($request);
 
-            return $this->render('admin_user/create.html.twig', [
-                'userForm' => $form->createView(),
-            ]);
-        } elseif ($request->isMethod(Request::METHOD_POST)) {
+        if ($form->isSubmitted() && $form->isValid()) {
 
-            $user = new User();
+            $user = $form->getData();
 
-            $form = $this->createForm(UserType::class, $user);
+            $user
+                ->setCreatedAt(new DateTime())
+                ->setUpdatedAt(new DateTime());
 
-            $form->handleRequest($request);
+            $userRepository->save($user, true);
 
-            if ($form->isSubmitted() && $form->isValid()) {
-
-                $user = $form->getData();
-
-                $user->setCreatedAt(new DateTime())
-                    ->setUpdatedAt(new DateTime());
-
-                $userRepository->save($user, true);
-
-                return $this->redirectToRoute('app_AdminUserController_list');
-            }
+            return $this->redirectToRoute('app_AdminUserController_list');
         }
+
+        return $this->render('admin_user/create.html.twig', [
+            'userForm' => $form->createView(),
+        ]);
     }
 
-    #[Route('/admin/users', name: "admin_AdminUserController_list", methods: ['GET'])]
+    #[Route('/admin/users', name: "app_AdminUserController_list", methods: ['GET'])]
     public function list(Request $request, UserRepository $userRepository): Response
     {
         if ($request->isMethod(Request::METHOD_GET)) {
@@ -56,5 +49,36 @@ class AdminUserController extends AbstractController
                 'users' => $users,
             ]);
         }
+    }
+
+    #[Route('/admin/users/{id}', name: "app_AdminUserController_update", methods: ['GET', 'POST'])]
+    public function update(User $user, Request $request, UserRepository $userRepository): Response
+    {
+        $form = $this->createForm(UserType::class, $user, [
+            'mode' => 'update'
+        ]);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $user = $form->getData();
+            $user->setUpdatedAt(new DateTime());
+            $userRepository->save($user, true);
+
+            return $this->redirectToRoute('app_AdminUserController_list');
+        }
+
+        return $this->render('admin_user/update.html.twig', [
+            'user' => $user,
+            'userForm' => $form->createView(),
+        ]);
+    }
+
+    #[Route('/admin/users/{id}/delete', name: "app_AdminUserController_delete", methods: ['GET'])]
+    public function delete(User $user, UserRepository $userRepository)
+    {
+        $userRepository->remove($user, true);
+
+        return $this->redirectToRoute('app_AdminUserController_list');
     }
 }
