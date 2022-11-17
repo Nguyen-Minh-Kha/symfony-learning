@@ -6,6 +6,7 @@ use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class UserType extends AbstractType
 {
@@ -16,16 +17,28 @@ class UserType extends AbstractType
             ->add('password')
             ->add('firstname')
             ->add('lastname')
-            ->add('profilePicture')
-            ->add('createdAt')
-            ->add('updatedAt')
-        ;
+            ->add('profilePicture');
+
+        if ($options['mode'] === 'create') {
+            $builder->add(
+                'submit',
+                SubmitType::class,
+                [
+                    'label' => 'Add new User',
+                ]
+            );
+        } else {
+            $builder->add('submit', SubmitType::class, [
+                'label' => 'Update User',
+            ]);
+        }
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => User::class,
+            'mode' => 'create',
         ]);
     }
 }
