@@ -41,3 +41,9 @@ bin/sf console ma:en <name of entity>
 ```
 bin/sf console do:sc:up --force
 ```
+
+## create FormType
+
+```
+bin/sf console ma:fo <name of form type>
+```
