@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Users listing{% endblock %}
+
+{% block body %}
+        <h1> Users listing </h1>
+        <div class="table-wrapper">
+            <table class="fl-table">
+                <thead>
+                    <tr>
+                        <th> Id </th>
+                        <th> Email </th>
+                        <th> Created at </th>
+                        <th> Updated at </th>
+                        <th> Actions </th>
+                    </tr>
+                </thead>
+                <tbody>
+            
+                    {% for user in users %}
+
+                    <tr>
+                        <td>{{ user.id }}</td>
+                        <td>{{ user.email }}</td>
+                        <td>{{ user.createdAt|date('d-m-Y') }}</td>
+                        <td>{{ user.updatedAt|date('d-m-Y') }}</td>
+                        <td> 
+                            <a href="{{ path('app_AdminBookController_update', {id: user.id}) }}">
+                            <i class="fa-solid fa-square-pen"></i>
+                            </a>
+
+                            <a href="{{ path('app_AdminBookController_delete', {id: user.id}) }}">
+                            <i class="fa-solid fa-trash"></i>
+                            </a>
+
+                        </td>
+                    </tr>
+
+                    {% endfor %}
+                <tbody>
+            </table>
+        </div>
+{% endblock %}

@@ -41,8 +41,20 @@ class AdminUserController extends AbstractController
 
                 $userRepository->save($user, true);
 
-                return $this->redirectToRoute('app_AdminUserController_create');
+                return $this->redirectToRoute('app_AdminUserController_list');
             }
+        }
+    }
+
+    #[Route('/admin/users', name: "admin_AdminUserController_list", methods: ['GET'])]
+    public function list(Request $request, UserRepository $userRepository): Response
+    {
+        if ($request->isMethod(Request::METHOD_GET)) {
+            $users = $userRepository->findAll();
+
+            return $this->render('admin_user/list.html.twig', [
+                'users' => $users,
+            ]);
         }
     }
 }
