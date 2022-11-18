@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use DateTime;
+use App\Entity\Genre;
 use App\Form\GenreType;
 use App\Repository\GenreRepository;
 use Symfony\Component\HttpFoundation\Request;
@@ -37,10 +38,53 @@ class AdminGenreController extends AbstractController
 
             $genreRepository->save($genre, true);
 
-            return $this->redirectToRoute('');
+            return $this->redirectToRoute('app_AdminGenreController_list');
         }
         return $this->render('admin_genre/create.html.twig', [
             'genreForm' => $form->createView(),
         ]);
+    }
+
+    #[Route('/admin/genres', name: "app_AdminGenreController_list", methods: ['GET'])]
+    public function list(Request $request, GenreRepository $genreRepository): Response
+    {
+        if ($request->isMethod(Request::METHOD_GET)) {
+            $genres = $genreRepository->findAll();
+
+            return $this->render('admin_genre/list.html.twig', [
+                'genres' => $genres,
+            ]);
+        }
+    }
+
+    #[Route('/admin/genres/{id}', name: "app_AdminGenreController_update", methods: ['GET', 'POST'])]
+    public function update(Request $request, GenreRepository $genreRepository, Genre $genre): Response
+    {
+        $form = $this->createForm(GenreType::class, $genre, [
+            'mode' => 'update'
+        ]);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $genre = $form->getData();
+            $genre->setUpdatedAt(new DateTime());
+            $genreRepository->save($genre, true);
+
+            return $this->redirectToRoute('app_AdminGenreController_list');
+        }
+
+        return $this->render('admin_genre/update.html.twig', [
+            'genre' => $genre,
+            'genreForm' => $form->createView(),
+        ]);
+    }
+
+    #[Route('/admin/genres/{id}/delete', name: "app_AdminGenreController_delete", methods: ['GET'])]
+    public function delete(Genre $genre, GenreRepository $genreRepository)
+    {
+        $genreRepository->remove($genre, true);
+
+        return $this->redirectToRoute('app_AdminGenreController_list');
     }
 }
