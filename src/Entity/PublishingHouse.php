@@ -2,14 +2,14 @@
 
 namespace App\Entity;
 
-use App\Repository\GenreRepository;
+use App\Repository\PublishingHouseRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: GenreRepository::class)]
-class Genre
+#[ORM\Entity(repositoryClass: PublishingHouseRepository::class)]
+class PublishingHouse
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -17,18 +17,15 @@ class Genre
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $title = null;
+    private ?string $name = null;
 
     #[ORM\Column(type: Types::TEXT)]
     private ?string $description = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?\DateTimeInterface $createdAt = null;
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $country = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?\DateTimeInterface $updatedAt = null;
-
-    #[ORM\ManyToMany(targetEntity: Book::class, inversedBy: 'genres')]
+    #[ORM\OneToMany(mappedBy: 'publishingHouse', targetEntity: Book::class)]
     private Collection $books;
 
     public function __construct()
@@ -41,14 +38,14 @@ class Genre
         return $this->id;
     }
 
-    public function getTitle(): ?string
+    public function getName(): ?string
     {
-        return $this->title;
+        return $this->name;
     }
 
-    public function setTitle(string $title): self
+    public function setName(string $name): self
     {
-        $this->title = $title;
+        $this->name = $name;
 
         return $this;
     }
@@ -65,26 +62,14 @@ class Genre
         return $this;
     }
 
-    public function getCreatedAt(): ?\DateTimeInterface
+    public function getCountry(): ?string
     {
-        return $this->createdAt;
+        return $this->country;
     }
 
-    public function setCreatedAt(\DateTimeInterface $createdAt): self
+    public function setCountry(?string $country): self
     {
-        $this->createdAt = $createdAt;
-
-        return $this;
-    }
-
-    public function getUpdatedAt(): ?\DateTimeInterface
-    {
-        return $this->updatedAt;
-    }
-
-    public function setUpdatedAt(\DateTimeInterface $updatedAt): self
-    {
-        $this->updatedAt = $updatedAt;
+        $this->country = $country;
 
         return $this;
     }
@@ -101,6 +86,7 @@ class Genre
     {
         if (!$this->books->contains($book)) {
             $this->books->add($book);
+            $book->setPublishingHouse($this);
         }
 
         return $this;
@@ -108,7 +94,12 @@ class Genre
 
     public function removeBook(Book $book): self
     {
-        $this->books->removeElement($book);
+        if ($this->books->removeElement($book)) {
+            // set the owning side to null (unless already changed)
+            if ($book->getPublishingHouse() === $this) {
+                $book->setPublishingHouse(null);
+            }
+        }
 
         return $this;
     }
