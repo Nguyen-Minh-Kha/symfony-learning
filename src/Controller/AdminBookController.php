@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use DateTime;
-use App\Entity\Book;
+use App\Form\BookType;
 use App\Repository\BookRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -24,33 +24,24 @@ class AdminBookController extends AbstractController
     #[Route('/admin/book/create', name: 'app_AdminBookController_create', methods: ['GET', 'POST'])]
     public function create(Request $request, BookRepository $repository): Response
     {
-        if ($request->isMethod(Request::METHOD_GET)) {
+        $form = $this->createForm(BookType::class);
 
-            // render form template
-            return $this->render('admin_book/create.html.twig');
-        } elseif ($request->isMethod(Request::METHOD_POST)) {
+        $form->handleRequest($request);
 
-            // get form data with verification
-            $title = $request->request->has('title') ? $request->request->get('title') : false;
-            $description = $request->request->has('description') ? $request->request->get('description') : "";
-            $genre = $request->request->has('genre') ? $request->request->get('genre') : "";
+        if ($form->isSubmitted() && $form->isValid()) {
+            $book = $form->getData();
 
-            if (!$title) {
-                // send to error page title empty
-            }
-
-            // add new book to repository
-            $book = (new Book())
-                ->setTitle($title)
-                ->setDescription($description)
-                ->setGenre($genre)
-                ->setCreatedAt(new DateTime())
-                ->setUpdatedAt(new DateTime());
+            $book   
+            ->setCreatedAt(new DateTime())
+            ->setUpdatedAt(new DateTime());
 
             $repository->save($book, true);
-
             return $this->redirectToRoute('app_AdminBookController_list');
         }
+        
+        return $this->render('admin_book/create.html.twig',[
+            'form' => $form->createView()
+        ]);
     }
 
     #[Route('/admin/book', name: 'app_AdminBookController_list', methods: ['GET'])]
@@ -98,7 +89,6 @@ class AdminBookController extends AbstractController
             // update book data
             $book->setTitle($title);
             $book->setDescription($description);
-            $book->setGenre($genre);
             $repository->save($book, true);
 
             return $this->redirectToRoute('app_AdminBookController_list');
