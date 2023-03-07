@@ -55,3 +55,9 @@ bin/sf console ma:mi
 
 bin/sf console do:mi:mi 
 ```
+
+## fixtures load 
+
+```
+bin/sf console h:f:l
+```
