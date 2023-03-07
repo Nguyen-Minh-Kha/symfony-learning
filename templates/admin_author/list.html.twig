@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Authors listing{% endblock %}
+
+{% block body %}
+        <h1> Authors listing </h1>
+        <div class="table-wrapper">
+            <table class="fl-table">
+                <thead>
+                    <tr>
+                        <th> Id </th>
+                        <th> name </th>
+                        <th> description </th>
+                        <th> books </th>
+                        <th> Actions </th>
+                    </tr>
+                </thead>
+                <tbody>
+            
+                    {% for author in authors %}
+
+                    <tr>
+                        <td>{{ author.id }}</td>
+                        <td>{{ author.name }}</td>
+                        <td>{{ author.description }}</td>
+                        <td>test</td>
+                        <td> 
+                            <a href="{{ path('app_AdminAuthorController_update', {id: author.id}) }}">
+                            <i class="fa-solid fa-square-pen"></i>
+                            </a>
+
+                            <a href="{{ path('app_AdminAuthorController_delete', {id: author.id}) }}">
+                            <i class="fa-solid fa-trash"></i>
+                            </a>
+
+                        </td>
+                    </tr>
+
+                    {% endfor %}
+                <tbody>
+            </table>
+        </div>
+{% endblock %}
