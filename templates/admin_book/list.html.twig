@@ -7,6 +7,11 @@
         <tr>
             <th> Id </th>
             <th> Title </th>
+            <th> Description </th>
+            <th> Author </th>
+            <th> Publishing House </th>
+            <th> Genres </th>
+            <th> Price </th>
             <th> Created at </th>
             <th> Updated at </th>
             <th> Actions </th>
@@ -18,6 +23,23 @@
         <tr>
             <td>{{ book.id }}</td>
             <td>{{ book.title }}</td>
+            <td>{{ book.description }}</td>
+            <td>
+             {% if book.author %}
+                {{ book.author.name }}
+            {% endif %}
+            </td>
+            <td>
+             {% if book.publishinghouse %}
+                {{ book.publishinghouse.name }}
+            {% endif %}
+            </td>
+            <td>
+             {% for genre in book.genres %}
+                {{ genre.title }}
+            {% endfor %}
+            </td>
+            <td>{{ book.price }}</td>
             <td>{{ book.createdAt|date('d-m-Y') }}</td>
             <td>{{ book.updatedAt|date('d-m-Y') }}</td>
             <td> 
