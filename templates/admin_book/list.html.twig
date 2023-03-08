@@ -4,7 +4,6 @@
 <table class="fl-table">
     <thead>
         <tr>
-            <th> Id </th>
             <th> Title </th>
             <th> Description </th>
             <th> Author </th>
@@ -20,7 +19,6 @@
 {% for book in books %}
 
         <tr>
-            <td>{{ book.id }}</td>
             <td>{{ book.title }}</td>
             <td>{{ book.description|length > 25 ? book.description|slice(0,25) ~ ('...') : book.description }}</td>
             <td>

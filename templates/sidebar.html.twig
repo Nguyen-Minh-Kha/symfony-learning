@@ -90,6 +90,27 @@
                     </a>
                 </li>
 
+
+                {% if app.user %}
+                    <li class="has-subnav"> 
+                        <a href="{{ path('app_logout') }}">
+                            <i class="fa-solid fa-right-from-bracket fa-2x"></i>
+                            <span class="nav-text">
+                                Logout
+                            </span>
+                        </a>
+                    </li>
+                {% else %}
+                    <li class="has-subnav"> 
+                        <a href="{{ path('app_login') }}">
+                            <i class="fa-solid fa-right-to-bracket fa-2x"></i>
+                            <span class="nav-text">
+                                Login
+                            </span>
+                        </a>
+                    </li>
+                {% endif %}
+
                 
             </ul>
 

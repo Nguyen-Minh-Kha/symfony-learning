@@ -68,3 +68,28 @@ App\Entity\Book:
     publishingHouse: "@house_*"
     created_at: <datetimeBetween('-50 days', 'now')>
     updated_at: <datetimeBetween('-50 days', 'now')>
+
+App\Entity\User:
+  user_admin:
+    email: "admin@mail.com"
+    roles: ["ROLE_ADMIN"]
+    #password: "password"
+    password: \$2y\$13\$RX6WCP2Um4QE5bAdSzkHuuku3lkbV8kuFMTh3NAPD5eMXuOQHqHqK
+    created_at: <datetimeBetween('-50 days', 'now')>
+    updated_at: <datetimeBetween('-50 days', 'now')>
+
+  user_user:
+    email: "user@mail.com"
+    roles: ["ROLE_USER"]
+    #password: "password"
+    password: \$2y\$13\$RX6WCP2Um4QE5bAdSzkHuuku3lkbV8kuFMTh3NAPD5eMXuOQHqHqK
+    created_at: <datetimeBetween('-50 days', 'now')>
+    updated_at: <datetimeBetween('-50 days', 'now')>
+
+  user_{1..50}:
+    email: "<safeEmail()>"
+    roles: ["ROLE_USER"]
+    #password: "password"
+    password: \$2y\$13\$RX6WCP2Um4QE5bAdSzkHuuku3lkbV8kuFMTh3NAPD5eMXuOQHqHqK
+    created_at: <datetimeBetween('-50 days', 'now')>
+    updated_at: <datetimeBetween('-50 days', 'now')>

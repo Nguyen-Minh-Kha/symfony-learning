@@ -1,20 +1,51 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello HomeController!{% endblock %}
+{% block title %}Our Library{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+<h1> Welcome to our Library <h1>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+<p> here you can find our list of books </p>
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ 'E:/SCHOOL STUFF/TAFF/Doranco - CDA/Symfony/firstapp/src/Controller/HomeController.php'|file_link(0) }}">src/Controller/HomeController.php</a></code></li>
-        <li>Your template at <code><a href="{{ 'E:/SCHOOL STUFF/TAFF/Doranco - CDA/Symfony/firstapp/templates/home/index.html.twig'|file_link(0) }}">templates/home/index.html.twig</a></code></li>
-    </ul>
-</div>
+<table class="fl-table">
+    <thead>
+        <tr>
+            <th> Id </th>
+            <th> Title </th>
+            <th> Description </th>
+            <th> Author </th>
+            <th> Publishing House </th>
+            <th> Genres </th>
+            <th> Price </th>
+    </thead>
+    <tbody>
+{% for book in books %}
+
+        <tr>
+            <td>{{ book.id }}</td>
+            <td>{{ book.title }}</td>
+            <td>{{ book.description|length > 25 ? book.description|slice(0,25) ~ ('...') : book.description }}</td>
+            <td>
+             {% if book.author %}
+                {{ book.author.name }}
+            {% endif %}
+            </td>
+            <td>
+             {% if book.publishinghouse %}
+                {{ book.publishinghouse.name }}
+            {% endif %}
+            </td>
+            <td>
+             {% for genre in book.genres %}
+                {{ genre.title }}, 
+            {% endfor %}
+            </td>
+            <td>{{ book.price }}</td>
+            
+        </tr>
+
+{% endfor %}
+    <tbody>
+</table>
+
 {% endblock %}
