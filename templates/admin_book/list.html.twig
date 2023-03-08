@@ -1,7 +1,6 @@
 {% extends 'list-book.html.twig' %}
 
 {% block listing %}
-<div class="table-wrapper">
 <table class="fl-table">
     <thead>
         <tr>
@@ -23,7 +22,7 @@
         <tr>
             <td>{{ book.id }}</td>
             <td>{{ book.title }}</td>
-            <td>{{ book.description }}</td>
+            <td>{{ book.description|length > 25 ? book.description|slice(0,25) ~ ('...') : book.description }}</td>
             <td>
              {% if book.author %}
                 {{ book.author.name }}
@@ -36,7 +35,7 @@
             </td>
             <td>
              {% for genre in book.genres %}
-                {{ genre.title }}
+                {{ genre.title }}, 
             {% endfor %}
             </td>
             <td>{{ book.price }}</td>
@@ -57,6 +56,5 @@
 {% endfor %}
     <tbody>
 </table>
-</div>
 {% endblock %}
 
