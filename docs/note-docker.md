@@ -55,6 +55,11 @@ bin/sf console ma:mi
 
 bin/sf console do:mi:mi 
 ```
+## check migration diff
+
+```
+bin/sf console do:mi:diff
+```
 
 ## fixtures load 
 
