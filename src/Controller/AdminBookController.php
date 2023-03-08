@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Book;
 use DateTime;
 use App\Form\BookType;
 use App\Repository\BookRepository;
@@ -55,56 +56,37 @@ class AdminBookController extends AbstractController
     }
 
     #[Route('/admin/book/{id}', name: 'app_AdminBookController_update', methods: ['GET', 'POST'])]
-    public function update(Request $request, BookRepository $repository, int $id): Response
+    public function update(Request $request, BookRepository $repository, Book $book): Response
     {
-        if ($request->isMethod(Request::METHOD_GET)) {
+        $form = $this->createForm(BookType::class, $book, [
+            'mode' => 'update'
+        ]);
 
-            $book = $repository->find($id);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $book = $form->getData();
 
-            // throws error 404
-            if (!$book) {
-                throw new NotFoundHttpException("book with $id not found");
-            }
+            $book->setUpdatedAt(new DateTime());
 
-            // render update form template
-            return $this->render('admin_book/update.html.twig', ["book" => $book]);
-        } elseif ($request->isMethod(Request::METHOD_POST)) {
-
-            $book = $repository->find($id);
-
-            // throws error 404
-            if (!$book) {
-                throw new NotFoundHttpException("book with $id not found");
-            }
-
-            // get form data with verification
-            $title = $request->request->has('title') ? $request->request->get('title') : false;
-            $description = $request->request->has('description') ? $request->request->get('description') : "";
-            $genre = $request->request->has('genre') ? $request->request->get('genre') : "";
-
-            if (!$title) {
-                // send to error page title empty
-            }
-
-            // update book data
-            $book->setTitle($title);
-            $book->setDescription($description);
-            $repository->save($book, true);
+            $repository->save($book);
 
             return $this->redirectToRoute('app_AdminBookController_list');
         }
+
+        return $this->render('admin_book/update.html.twig', [
+            'form' => $form->createView(),
+            'book' => $book
+        ]);
     }
+    
 
     #[Route('/admin/book/{id}/delete', name: 'app_AdminBookController_delete', methods: ['GET'])]
-    public function delete(Request $request, BookRepository $repository, int $id)
+    public function delete(Request $request, BookRepository $repository, Book $book) 
     {
-        if ($request->isMethod(Request::METHOD_GET)) {
+        
+        $repository->remove($book, true);
 
-            $book = $repository->find($id);
-
-            $repository->remove($book, true);
-
-            return $this->redirectToRoute('app_AdminBookController_list');
-        }
+        return $this->redirectToRoute('app_AdminBookController_list');
+        
     }
 }
