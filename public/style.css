@@ -299,6 +299,7 @@ div.pagination {
   transition: background-color .3s;
   display: flex;
   justify-content:center;
+  font-size: medium;
 }
 
 .pagination span {
