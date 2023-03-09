@@ -15,14 +15,7 @@
 			{% include 'admin/sidebar.html.twig' %}
 		{% elseif is_granted('ROLE_USER') %}
 
-			<li class="has-subnav">
-				<a href="">
-					<i class="fa-solid fa-circle-plus fa-2x"></i>
-					<span class="nav-text">
-						test
-					</span>
-				</a>
-			</li>
+			{% include 'user/sidebar.html.twig' %}
 		{% endif %}
 
 
