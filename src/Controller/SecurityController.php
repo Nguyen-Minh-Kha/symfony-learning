@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Form\ProfileType;
 use DateTime;
 use App\Form\RegistrationType;
 use App\Repository\UserRepository;
@@ -66,5 +67,34 @@ class SecurityController extends AbstractController
     public function logout(): void
     {
         throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
+    }
+
+    /**
+    * customize the users profile
+    */
+    #[Route('/user/profile', name: 'app_SecurityController_myProfile')]
+    public function myProfile(Request $request, UserRepository $userRepository): Response
+    {
+        $user = $this->getUser();
+
+        if($user){
+            $form = $this->createForm(ProfileType::class, $user);
+
+            $form->handleRequest($request);
+
+            if ($form->isSubmitted() && $form->isValid()) {
+                
+                $user->setUpdatedAt(new DateTime());
+                
+                $userRepository->save($user,true);
+                
+                return $this->redirectToRoute('app_home_index');
+            }
+            return $this->render('security/myProfile.html.twig',[
+                'form' => $form->createView()
+            ]);
+        } else {
+            return $this->redirectToRoute('app_login');
+        }
     }
 }
