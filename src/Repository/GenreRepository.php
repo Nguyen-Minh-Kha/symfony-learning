@@ -40,19 +40,19 @@ class GenreRepository extends ServiceEntityRepository
         }
     }
 
-        /**
+    /**
      * Find by criteria 
      */
     public function findByCriteria(SearchGenreCriteria $criteria): array
     {
-        $qd = $this->createQueryBuilder('category');
+        $qd = $this->createQueryBuilder('genre');
 
         if ($criteria->title) {
-            $qd->andWhere('category.title LIKE :title')
-                ->setParameter('name', "%$criteria->title%");
+            $qd->andWhere('genre.title LIKE :title')
+                ->setParameter('title', "%$criteria->title%");
         }
 
-        $qd->orderBy("category.$criteria->orderBy", $criteria->direction);
+        $qd->orderBy("genre.$criteria->orderBy", $criteria->direction);
 
         return $qd->getQuery()->getResult();
     }

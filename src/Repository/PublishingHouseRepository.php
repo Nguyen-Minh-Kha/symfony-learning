@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\DTO\SearchPublishingHouseCriteria;
 use App\Entity\PublishingHouse;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -37,6 +38,28 @@ class PublishingHouseRepository extends ServiceEntityRepository
         if ($flush) {
             $this->getEntityManager()->flush();
         }
+    }
+
+    /**
+     * Find by criteria 
+     */
+    public function findByCriteria(SearchPublishingHouseCriteria $criteria): array
+    {
+        $qd = $this->createQueryBuilder('house');
+
+        if ($criteria->name) {
+            $qd->andWhere('house.name LIKE :name')
+                ->setParameter('name', "%$criteria->name%");
+        }
+
+        if($criteria->country){
+            $qd->andWhere('house.country LIKE :country')
+               ->setParameter('country', "%$criteria->country%");
+        }
+
+        $qd->orderBy("house.$criteria->orderBy", $criteria->direction);
+
+        return $qd->getQuery()->getResult();
     }
 
 //    /**
