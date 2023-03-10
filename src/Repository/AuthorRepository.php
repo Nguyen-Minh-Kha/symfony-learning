@@ -48,7 +48,7 @@ class AuthorRepository extends ServiceEntityRepository
         $qd = $this->createQueryBuilder('author');
 
         if ($criteria->name) {
-            $qd->andWhere('author.Name LIKE :name')
+            $qd->andWhere('author.name LIKE :name')
             ->setParameter('name', "%$criteria->name%");
         }
 
