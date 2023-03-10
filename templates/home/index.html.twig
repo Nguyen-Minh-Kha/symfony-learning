@@ -42,7 +42,11 @@
 
 						<tr>
 							<td>{{ book.id }}</td>
-							<td>{{ book.title }}</td>
+							<td>
+								<a href="{{ path('app_BookController_viewBooks',{id: book.id}) }}">
+									{{ book.title }}
+								</a>
+							</td>
 							<td>{{ book.description|length > 25 ? book.description|slice(0,25) ~ ('...') : book.description }}</td>
 							<td>
 								{% if book.author %}

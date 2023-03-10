@@ -3,6 +3,7 @@
 namespace App\Controller\catalog;
 
 use App\DTO\SearchBookCriteria;
+use App\Entity\Book;
 use App\Form\SearchBookType;
 use App\Repository\BookRepository;
 use Knp\Component\Pager\PaginatorInterface;
@@ -52,6 +53,19 @@ class BookController extends AbstractController
             'books' => $data
         ]);
 
+    }
+
+    /**
+    * information of a book from catalog 
+    */
+    #[Route('/catalog/books/{id}', name: 'app_BookController_viewBooks')]
+    public function viewBook(Request $request, Book $book): Response
+    {
+        if ($book){
+            return $this->render('catalog/book/viewBook.html.twig',[
+                'book' => $book
+            ]);
+        }
     }
 
 
