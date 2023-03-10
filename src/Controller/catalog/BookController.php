@@ -16,7 +16,7 @@ class BookController extends AbstractController
     /**
     * Catalog > Books list with search bar for all users 
     */
-    #[Route('/catalog/books', name: 'app_BookController_searchBookList', methods: ['GET', 'POST'])]
+    #[Route('/catalog/books', name: 'app_BookController_searchBookList')]
     public function searchBookList(Request $request, BookRepository $bookRepository, SearchBookCriteria $searchBookCriteria, PaginatorInterface $paginator): Response
     {
         $books = $bookRepository->findAll();

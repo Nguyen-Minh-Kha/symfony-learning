@@ -23,7 +23,13 @@
                         <td>{{ author.id }}</td>
                         <td>{{ author.name }}</td>
                         <td>{{ author.description }}</td>
-                        <td>test</td>
+                        <td>
+                        {% if author.books %}
+                            {% for book in author.books %}
+                                {{ book.title }}, 
+                            {% endfor %}
+                        {% endif %}
+                        </td>
                         <td> 
                             <a href="{{ path('app_AdminAuthorController_update', {id: author.id}) }}">
                             <i class="fa-solid fa-square-pen"></i>

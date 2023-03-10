@@ -1,0 +1,61 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Author Catalog
+{% endblock %}
+
+{% block body %}
+	<h1>
+		Welcome to our Author Catalog
+	</h1>
+
+	<p>
+		Here you can find our list of author or you can fill the form to find a specific author
+	</p>
+
+	{{ form(form)}}
+	</br>
+	<table class="fl-table">
+		<thead>
+			<tr>
+				<th>
+					Id
+				</th>
+				<th>
+					Name
+				</th>
+				<th>
+					Description
+				</th>
+				<th>
+					Books
+				</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for author in authors %}
+
+				<tr>
+					<td>{{ author.id }}</td>
+					<td>{{ author.name }}</td>
+					<td>{{ author.description|length > 25 ? author.description|slice(0,25) ~ ('...') : author.description }}</td>
+
+					{% if author.books %}
+						<td>
+							{% for book in author.books %}
+								{{ book.title }},
+							{% endfor %}
+						</td>
+					{% else %}
+						<td></td>
+					{% endif %}
+
+				</tr>
+
+			{% endfor %}
+		</tbody>
+		<tbody></tbody>
+	</table>
+	<nav class="pagination">
+		{{ knp_pagination_render(authors) }}
+	</nav>
+{% endblock %}

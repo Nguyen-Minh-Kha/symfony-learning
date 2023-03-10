@@ -1,7 +1,7 @@
 <li tabindex="0" class="has-subnav" title="Visit our catalog" data-toggle="popover" data-placement="right" data-trigger="focus" data-html="true" data-content='
 
 <li class="has-subnav">
-	<a href="">
+	<a href="{{ path('app_BookController_searchBookList') }}">
 		<i class="fa-solid fa-book fa-2x"></i>
 		<span class="nav-text">
 			Books
@@ -17,7 +17,7 @@
 	</a>
 </li>
 <li class="has-subnav">
-	<a href="">
+	<a href="{{ path('app_AuthorController_searchAuthorList') }}">
 		<i class="fa-solid fa-feather fa-2x"></i>
 		<span class="nav-text">
 			Authors
@@ -26,7 +26,7 @@
 </li>
 <li class="has-subnav">
 	<a href="">
-		<i class="fa-solid fa-house fa-2x"></i>
+		<i class="fa-solid fa-building fa-2x"></i>
 		<span class="nav-text">
 			Publishing Houses
 		</span>
