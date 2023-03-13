@@ -39,7 +39,12 @@
 
 				<tr>
 					<td>{{ house.id }}</td>
-					<td>{{ house.name }}</td>
+					<td>
+					<a href="{{ path('app_PublishingHouseController_viewHouse', {id: house.id})}}"> 
+						{{ house.name }}
+					</a>
+					
+					</td>
 					<td>{{ house.description|length > 25 ? house.description|slice(0,25) ~ ('...') : house.description }}</td>
                     <td>{{ house.country }}</td>
 					{% if house.books %}

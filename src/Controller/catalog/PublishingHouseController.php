@@ -4,6 +4,7 @@ namespace App\Controller\catalog;
 
 use App\Form\SearchPublishingHouseType;
 use App\DTO\SearchPublishingHouseCriteria;
+use App\Entity\PublishingHouse;
 use Knp\Component\Pager\PaginatorInterface;
 use App\Repository\PublishingHouseRepository;
 use Symfony\Component\HttpFoundation\Request;
@@ -53,5 +54,25 @@ class PublishingHouseController extends AbstractController
             'houses' => $data
         ]);
 
+    }
+
+    /**
+    * view publish house books list
+    */
+    #[Route('/catalog/publishing-house/{id}', name: 'app_PublishingHouseController_viewHouse')]
+    public function viewHouse(Request $request, PublishingHouse $house, PaginatorInterface $paginator): Response
+    {
+        if($house){
+            $data = $paginator->paginate(
+                $house->getBooks(),
+                $request->query->getInt('page', 1),
+                10,
+            );
+
+            return $this->render('catalog/publishing_house/viewPublishingHouse.html.twig',[
+                'houseName' => $house->getName(),
+                'books' => $data,
+            ]);
+        }
     }
 }
