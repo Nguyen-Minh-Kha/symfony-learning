@@ -1,19 +1,17 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Book Catalog
+{% block title %} {{genreTitle}}
 {% endblock %}
 
 {% block body %}
 	<h1>
-		Welcome to our Book Catalog
+		{{genreTitle}}
 		</h1>
 
 			<p>
-				Here you can find our list of books or you can fill the form to find a specific book
+				Here you can find our list of books for the genre {{genreTitle}}
 			</p>
 
-            {{ form(form)}}
-            </br>
 			<table class="fl-table">
 				<thead>
 					<tr>

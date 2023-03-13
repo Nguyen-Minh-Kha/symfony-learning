@@ -36,7 +36,12 @@
 
 				<tr>
 					<td>{{ genre.id }}</td>
-					<td>{{ genre.title }}</td>
+					<td>
+						<a href="{{path('app_GenreController_viewGenre', {id: genre.id})}}"> 
+							{{ genre.title }}
+						</a>
+					
+					</td>
 					<td>{{ genre.description|length > 25 ? genre.description|slice(0,25) ~ ('...') : genre.description }}</td>
 
 					{% if genre.books %}

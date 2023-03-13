@@ -3,6 +3,7 @@
 namespace App\Controller\catalog;
 
 use App\DTO\SearchGenreCriteria;
+use App\Entity\Genre;
 use App\Form\SearchGenreType;
 use App\Repository\GenreRepository;
 use Knp\Component\Pager\PaginatorInterface;
@@ -54,6 +55,26 @@ class GenreController extends AbstractController
         ]);
     }
 
-    
+    /**
+    * get books from a specific genre 
+    */
+    #[Route('/catalog/genres/{id}', name: 'app_GenreController_viewGenre')]
+    public function viewGenre(Request $request, Genre $genre, PaginatorInterface $paginator): Response
+    {
+        if($genre){
+
+            $data = $paginator->paginate(
+                $genre->getBooks(),
+                $request->query->getInt('page', 1),
+                10,
+            );
+
+            return $this->render('catalog/genre/viewGenre.html.twig',[
+                'genreTitle' => $genre->getTitle(),
+                'books' => $data,
+
+            ]);
+        }
+    }
     
 }
