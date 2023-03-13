@@ -36,7 +36,12 @@
 
 				<tr>
 					<td>{{ author.id }}</td>
-					<td>{{ author.name }}</td>
+					<td>
+						<a href="{{ path('app_AuthorController_viewAuthor',{id: author.id}) }}"> 
+							{{ author.name }}
+						</a>
+						
+					</td>
 					<td>{{ author.description|length > 25 ? author.description|slice(0,25) ~ ('...') : author.description }}</td>
 
 					{% if author.books %}
