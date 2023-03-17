@@ -6,9 +6,9 @@ use App\Entity\Genre;
 use App\Entity\Author;
 use App\DTO\SearchBookCriteria;
 use App\Entity\PublishingHouse;
+use App\Form\Type\Select2Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
@@ -19,23 +19,26 @@ class SearchBookType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        $authors = $options['data']->authors;
+        $houses = $options['data']->publishingHouses;
+        $genres = $options['data']->genres;
         $builder
             ->add('title', TextType::class, [
                 'required' => false,
             ])
-            ->add('authors', EntityType::class, [
+            ->add('authors', Select2Type::class, [
                 'class' => Author::class,
                 'required' => false,
-                'choice_label' => 'name',
                 'multiple' => true,
-                'expanded' => true,
+                'choices' => $authors,
+                'data_length' => count($authors),
             ])
-            ->add('genres', EntityType::class, [
+            ->add('genres', Select2Type::class, [
                 'class' => Genre::class,
                 'required' => false,
-                'choice_label' => 'title',
                 'multiple' => true,
-                'expanded' => true,
+                'choices' => $genres,
+                'data_length' => count($genres),
             ])
             ->add('minPrice',MoneyType::class, [
                 'required' => false,
@@ -43,12 +46,12 @@ class SearchBookType extends AbstractType
             ->add('maxPrice', MoneyType::class, [
                 'required' => false,
             ])
-            ->add('publishingHouses', EntityType::class, [
+            ->add('publishingHouses', Select2Type::class, [
                 "class" => PublishingHouse::class,
-                'choice_label' => 'name',
                 'multiple' => true,
-                'expanded' => true,
                 'required' => false,
+                'choices' => $houses,
+                'data_length' => count($houses)
             ])
             ->add('orderBy', ChoiceType::class, [
                 'choices' => [
