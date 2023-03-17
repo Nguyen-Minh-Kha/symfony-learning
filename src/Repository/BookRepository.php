@@ -70,7 +70,7 @@ class BookRepository extends ServiceEntityRepository
                 ->setParameter('maxPrice', $criteria->maxPrice);
         }
         if ($criteria->publishingHouses) {
-            $qd->leftJoin('book.publishinghouse', 'house')
+            $qd->leftJoin('book.publishingHouse', 'house')
                 ->andWhere('house.id IN (:houseId)')
                 ->setParameter('houseId', $criteria->publishingHouses);
         }

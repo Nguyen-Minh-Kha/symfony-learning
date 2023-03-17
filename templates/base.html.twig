@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <meta name="robots" content="noindex, nofollow">
         <title>{% block title %}Welcome!{% endblock %}</title>
         {% include "head.html.twig" %}
     </head>
@@ -15,12 +16,19 @@
     </div>
       
     <script> 
+        {# popover jquery #}
         $(document).ready(function(){
             $('[data-toggle="popover"]').popover();   
         });
+
         $('.popover-dismiss').popover({
             trigger: 'focus'
         })
+
+        {# select2 jquery #}
+        $(document).ready(function() {
+            $('.js-example-basic-multiple').select2();
+        });
     </script>
 
     </body>

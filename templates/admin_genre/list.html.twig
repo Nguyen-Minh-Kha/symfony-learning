@@ -22,7 +22,7 @@
 
                     <tr>
                         <td>{{ genre.id }}</td>
-                        <td>{{ genre.title }}</td>
+                        <td>{{ genre.name }}</td>
                         <td>{{ genre.description|length > 25 ? genre.description|slice(0,25) ~ '...' : genre.description }}</td>
                         <td>{{ genre.createdAt|date('d-m-Y') }}</td>
                         <td>{{ genre.updatedAt|date('d-m-Y') }}</td>

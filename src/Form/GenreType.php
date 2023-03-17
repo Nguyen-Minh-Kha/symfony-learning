@@ -13,7 +13,7 @@ class GenreType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('title')
+            ->add('name')
             ->add('description');
         if ($options['mode'] === 'create') {
             $builder->add(

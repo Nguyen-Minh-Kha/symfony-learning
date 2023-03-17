@@ -37,7 +37,7 @@ class BookType extends AbstractType
                 'label' => 'choose genres',
                 'required' => false,
                 'class' => Genre::class,
-                'choice_label' => 'title',
+                'choice_label' => 'name',
                 'multiple' => true,
                 'expanded' => true
             ])

@@ -1,26 +1,26 @@
 App\Entity\Genre:
   genre_1:
-    title: "Science fiction"
+    name: "Science fiction"
     description: "<en_EN:realText(100)>"
     created_at: <datetimeBetween('-50 days', 'now')>
     updated_at: <datetimeBetween('-50 days', 'now')>
   genre_2:
-    title: "Policier"
+    name: "Policier"
     description: "<en_EN:realText(100)>"
     created_at: <datetimeBetween('-50 days', 'now')>
     updated_at: <datetimeBetween('-50 days', 'now')>
   genre_3:
-    title: "Drama"
+    name: "Drama"
     description: "<en_EN:realText(100)>"
     created_at: <datetimeBetween('-50 days', 'now')>
     updated_at: <datetimeBetween('-50 days', 'now')>
   genre_4:
-    title: "Literature"
+    name: "Literature"
     description: "<en_EN:realText(100)>"
     created_at: <datetimeBetween('-50 days', 'now')>
     updated_at: <datetimeBetween('-50 days', 'now')>
   genre_{5..25}:
-    title: "<en_EN:word()>"
+    name: "<en_EN:word()>"
     description: "<en_EN:realText(100)>"
     created_at: <datetimeBetween('-50 days', 'now')>
     updated_at: <datetimeBetween('-50 days', 'now')>

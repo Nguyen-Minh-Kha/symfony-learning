@@ -70,7 +70,7 @@ class GenreController extends AbstractController
             );
 
             return $this->render('catalog/genre/viewGenre.html.twig',[
-                'genreTitle' => $genre->getTitle(),
+                'genreTitle' => $genre->getName(),
                 'books' => $data,
 
             ]);

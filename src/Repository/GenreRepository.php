@@ -47,9 +47,9 @@ class GenreRepository extends ServiceEntityRepository
     {
         $qd = $this->createQueryBuilder('genre');
 
-        if ($criteria->title) {
-            $qd->andWhere('genre.title LIKE :title')
-                ->setParameter('title', "%$criteria->title%");
+        if ($criteria->name) {
+            $qd->andWhere('genre.name LIKE :name')
+                ->setParameter('name', "%$criteria->name%");
         }
 
         $qd->orderBy("genre.$criteria->orderBy", $criteria->direction);

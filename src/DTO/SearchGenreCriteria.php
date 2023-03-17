@@ -11,7 +11,7 @@ namespace App\DTO;
 
 class SearchGenreCriteria
 {
-    public ?string $title = '';
+    public ?string $name = '';
 
     public ?string $orderBy = 'id';
 

@@ -17,7 +17,7 @@ class Genre
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $title = null;
+    private ?string $name = null;
 
     #[ORM\Column(type: Types::TEXT)]
     private ?string $description = null;
@@ -41,14 +41,14 @@ class Genre
         return $this->id;
     }
 
-    public function getTitle(): ?string
+    public function getName(): ?string
     {
-        return $this->title;
+        return $this->name;
     }
 
-    public function setTitle(string $title): self
+    public function setName(string $name): self
     {
-        $this->title = $title;
+        $this->name = $name;
 
         return $this;
     }
@@ -111,5 +111,9 @@ class Genre
         $this->books->removeElement($book);
 
         return $this;
+    }
+
+    public function __toString() {
+        return $this->name;
     }
 }
