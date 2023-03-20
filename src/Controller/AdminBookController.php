@@ -67,7 +67,7 @@ class AdminBookController extends AbstractController
 
             $book->setUpdatedAt(new DateTime());
 
-            $repository->save($book);
+            $repository->save($book, true);
 
             return $this->redirectToRoute('app_AdminBookController_list');
         }
