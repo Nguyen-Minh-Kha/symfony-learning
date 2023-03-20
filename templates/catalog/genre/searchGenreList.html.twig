@@ -1,0 +1,76 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Genre Catalog
+{% endblock %}
+
+{% block body %}
+	<h1>
+		Welcome to our Genre Catalog
+	</h1>
+
+	<p>
+		Here you can find our list of genre or you can fill the form to find a specific genre
+	</p>
+
+	<div> 
+				<button type="button" class="btn btn-primary" id="toggle-btn" data-toggle="collapse" data-target="#toggle-example" aria-expanded="false" aria-controls="collapseExample">
+					Click me
+				</button>
+
+				<div id="toggle-example" class="collapse">
+					{{ form(form)}}
+				</div>
+			</div>
+
+            
+	</br>
+	<table class="fl-table">
+		<thead>
+			<tr>
+				<th>
+					Id
+				</th>
+				<th>
+					Title
+				</th>
+				<th>
+					Description
+				</th>
+				<th>
+					Books
+				</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for genre in genres %}
+
+				<tr>
+					<td>{{ genre.id }}</td>
+					<td>
+						<a href="{{path('app_GenreController_viewGenre', {id: genre.id})}}"> 
+							{{ genre.name }}
+						</a>
+					
+					</td>
+					<td>{{ genre.description|length > 25 ? genre.description|slice(0,25) ~ ('...') : genre.description }}</td>
+
+					{% if genre.books %}
+						<td>
+							{% for book in genre.books %}
+								{{ book.title }},
+							{% endfor %}
+						</td>
+					{% else %}
+						<td></td>
+					{% endif %}
+
+				</tr>
+
+			{% endfor %}
+		</tbody>
+		<tbody></tbody>
+	</table>
+	<nav class="pagination">
+		{{ knp_pagination_render(genres) }}
+	</nav>
+{% endblock %}

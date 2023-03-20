@@ -1,0 +1,76 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} {{authorName}}
+{% endblock %}
+
+{% block body %}
+	<h1>
+		{{authorName}}
+		</h1>
+
+			<p>
+				Here you can find our list of books by author {{authorName}}
+			</p>
+
+			<table class="fl-table">
+				<thead>
+					<tr>
+						<th>
+							Id
+						</th>
+						<th>
+							Title
+						</th>
+						<th>
+							Description
+						</th>
+						<th>
+							Author
+						</th>
+						<th>
+							Publishing House
+						</th>
+						<th>
+							Genres
+						</th>
+						<th>
+							Price</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for book in books %}
+
+						<tr>
+							<td>{{ book.id }}</td>
+							<td>
+								<a href="{{ path('app_BookController_viewBooks',{id: book.id}) }}">
+									{{ book.title }}
+								</a>
+							</td>
+							<td>{{ book.description|length > 25 ? book.description|slice(0,25) ~ ('...') : book.description }}</td>
+							<td>
+								{% if book.author %}
+									{{ book.author.name }}
+								{% endif %}
+							</td>
+							<td>
+								{% if book.publishinghouse %}
+									{{ book.publishinghouse.name }}
+								{% endif %}
+							</td>
+							<td>
+								{% for genre in book.genres %}
+									{{ genre.name }},
+								{% endfor %}
+							</td>
+							<td>{{ book.price }}</td>
+
+						</tr>
+					{% endfor %}
+				</tbody>
+				<tbody></tbody>
+			</table>
+            <nav class="pagination">
+			{{ knp_pagination_render(books) }}
+            </nav>
+		{% endblock %}

@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Publishing Houes listing{% endblock %}
+
+{% block body %}
+        <h1> Publishing houses listing </h1>
+            <table class="fl-table">
+                <thead>
+                    <tr>
+                        <th> Id </th>
+                        <th> name </th>
+                        <th> description </th>
+                        <th> country </th>
+                        <th> Actions </th>
+                    </tr>
+                </thead>
+                <tbody>
+            
+                    {% for publishinghouse in publishinghouses %}
+
+                    <tr>
+                        <td>{{ publishinghouse.id }}</td>
+                        <td>{{ publishinghouse.name }}</td>
+                        <td>{{ publishinghouse.description }}</td>
+                        <td>{{ publishinghouse.country }}</td>
+                        <td> 
+                            <a href="{{ path('app_AdminPublishingHouseController_update', {id: publishinghouse.id}) }}">
+                            <i class="fa-solid fa-square-pen"></i>
+                            </a>
+
+                            <a href="{{ path('app_AdminPublishingHouseController_remove', {id: publishinghouse.id}) }}">
+                            <i class="fa-solid fa-trash"></i>
+                            </a>
+
+                        </td>
+                    </tr>
+
+                    {% endfor %}
+                <tbody>
+            </table>
+        <nav class="pagination">
+	            {{ knp_pagination_render(publishinghouses) }}
+            </nav>
+{% endblock %}

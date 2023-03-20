@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Sign Up{% endblock %}
+
+{% block body %}
+
+<h1>Sign Up</h1>
+
+<div class="example-wrapper">
+
+    {# {% if error %}
+        <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+    {% endif %} #}
+
+    {% if app.user %}
+        <div class="mb-3">
+            You are logged in as {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Logout</a>
+        </div>
+
+    {% else %}
+        {{ form(form) }}
+        <a href="{{path('app_login')}}"> Already have an Account ? Sign in here </a>
+    {% endif %}
+
+    
+
+</div>
+{% endblock %}

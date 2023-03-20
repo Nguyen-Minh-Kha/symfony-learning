@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\DTO\SearchGenreCriteria;
 use App\Entity\Genre;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -37,6 +38,23 @@ class GenreRepository extends ServiceEntityRepository
         if ($flush) {
             $this->getEntityManager()->flush();
         }
+    }
+
+    /**
+     * Find by criteria 
+     */
+    public function findByCriteria(SearchGenreCriteria $criteria): array
+    {
+        $qd = $this->createQueryBuilder('genre');
+
+        if ($criteria->name) {
+            $qd->andWhere('genre.name LIKE :name')
+                ->setParameter('name', "%$criteria->name%");
+        }
+
+        $qd->orderBy("genre.$criteria->orderBy", $criteria->direction);
+
+        return $qd->getQuery()->getResult();
     }
 
 //    /**

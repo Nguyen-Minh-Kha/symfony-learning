@@ -24,7 +24,6 @@ nav.main-menu.expanded {
   background: #3f403f;
   border-right: 1px solid #e5e5e5;
   position: absolute;
-  top: 137px;
   bottom: 0;
   height: 100%;
   left: 0;
@@ -142,8 +141,8 @@ nav.main-menu li.active > a,
 /* content css */
 
 .content-wrapper {
-  margin: 1em auto;
-  max-width: 800px;
+  margin: 0.5em auto;
+  max-width: fit-content;
   width: 95%;
   font: 18px/1.5 sans-serif;
 }
@@ -281,3 +280,41 @@ body {
     text-align: center;
   }
 }
+
+.example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+.example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+
+/* paginate */
+
+nav.pagination {
+  display: flex;
+  justify-content:center;
+}
+
+div.pagination {
+  color: black;
+  float: left;
+  padding: 8px 16px;
+  text-decoration: none;
+  transition: background-color .3s;
+  display: flex;
+  justify-content:center;
+  font-size: medium;
+}
+
+.pagination span {
+  margin: 0 1px;
+  color: black;
+  float: left;
+  padding: 8px 16px;
+  text-decoration: none;
+  transition: background-color .3s;
+}
+
+.pagination span.current {
+  background-color: #3f403f;
+  color: white;
+}
+
+.pagination span:hover:not(.current) {background-color: #ddd;}
+

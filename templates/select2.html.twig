@@ -1,0 +1,20 @@
+{% block select2_widget %}
+    <select {{ block('widget_attributes') }} 
+    class="js-example-basic-multiple"
+    {{form.vars.multiple ? 'multiple="multiple"' : ""}}
+    style="width: 100%">
+        {% if data_length == value|length %}
+            {% for choice in choices %}
+                <option value="{{ choice.id }}"> {{ choice.name }} </option>
+            {% endfor %}
+        {% else %}
+            {% for choice in choices %}
+                {% if choice.id in value %}
+                    <option value="{{ choice.id }}" selected> {{ choice.name }} </option>
+                {% else %}
+                    <option value="{{ choice.id }}"> {{ choice.name }} </option>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+    </select>
+{% endblock %}

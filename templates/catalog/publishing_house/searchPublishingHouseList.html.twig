@@ -1,0 +1,79 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Publishing House Catalog
+{% endblock %}
+
+{% block body %}
+	<h1>
+		Welcome to our Publishing House Catalog
+	</h1>
+
+	<p>
+		Here you can find our list of publishing house or you can fill the form to find a specific house
+	</p>
+
+	<div> 
+				<button type="button" class="btn btn-primary" id="toggle-btn" data-toggle="collapse" data-target="#toggle-example" aria-expanded="false" aria-controls="collapseExample">
+					Click me
+				</button>
+
+				<div id="toggle-example" class="collapse">
+					{{ form(form)}}
+				</div>
+			</div>
+
+            
+	</br>
+	<table class="fl-table">
+		<thead>
+			<tr>
+				<th>
+					Id
+				</th>
+				<th>
+					Name
+				</th>
+				<th>
+					Description
+				</th>
+                <th>
+					Country
+				</th>
+				<th>
+					Books
+				</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for house in houses %}
+
+				<tr>
+					<td>{{ house.id }}</td>
+					<td>
+					<a href="{{ path('app_PublishingHouseController_viewHouse', {id: house.id})}}"> 
+						{{ house.name }}
+					</a>
+					
+					</td>
+					<td>{{ house.description|length > 25 ? house.description|slice(0,25) ~ ('...') : house.description }}</td>
+                    <td>{{ house.country }}</td>
+					{% if house.books %}
+						<td>
+							{% for book in house.books %}
+								{{ book.title }},
+							{% endfor %}
+						</td>
+					{% else %}
+						<td></td>
+					{% endif %}
+
+				</tr>
+
+			{% endfor %}
+		</tbody>
+		<tbody></tbody>
+	</table>
+	<nav class="pagination">
+		{{ knp_pagination_render(houses) }}
+	</nav>
+{% endblock %}

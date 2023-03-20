@@ -3,8 +3,9 @@
 namespace App\Repository;
 
 use App\Entity\Book;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use App\DTO\SearchBookCriteria;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
  * @extends ServiceEntityRepository<Book>
@@ -37,6 +38,46 @@ class BookRepository extends ServiceEntityRepository
         if ($flush) {
             $this->getEntityManager()->flush();
         }
+    }
+
+        /**
+     * research with DTO 
+     */
+    public function findByCriteria(SearchBookCriteria $criteria): array
+    {
+        $qd = $this->createQueryBuilder('book');
+
+        if ($criteria->title) {
+            $qd->andWhere('book.title LIKE :title')
+                ->setParameter('title', "%$criteria->title%");
+        }
+        if (!empty($criteria->authors)) {
+            $qd->leftJoin('book.author', 'author')
+                ->andWhere('author.id IN (:authorIds)')
+                ->setParameter('authorIds', $criteria->authors);
+        }
+        if (!empty($criteria->genres)) {
+            $qd->leftJoin('book.genres', 'genre')
+                ->andWhere('genre.id IN (:genreId)')
+                ->setParameter('genreId', $criteria->genres);
+        }
+        if ($criteria->minPrice) {
+            $qd->andWhere('book.price >= :minPrice')
+                ->setParameter('minPrice', $criteria->minPrice);
+        }
+        if ($criteria->maxPrice) {
+            $qd->andWhere('book.price <= :maxPrice')
+                ->setParameter('maxPrice', $criteria->maxPrice);
+        }
+        if ($criteria->publishingHouses) {
+            $qd->leftJoin('book.publishingHouse', 'house')
+                ->andWhere('house.id IN (:houseId)')
+                ->setParameter('houseId', $criteria->publishingHouses);
+        }
+
+        $qd->orderBy("book.$criteria->orderBy", $criteria->direction);
+
+        return $qd->getQuery()->getResult();
     }
 
 //    /**

@@ -6,6 +6,7 @@ use DateTime;
 use App\Entity\User;
 use App\Form\UserType;
 use App\Repository\UserRepository;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -40,13 +41,19 @@ class AdminUserController extends AbstractController
     }
 
     #[Route('/admin/users', name: "app_AdminUserController_list", methods: ['GET'])]
-    public function list(Request $request, UserRepository $userRepository): Response
+    public function list(Request $request, UserRepository $userRepository, PaginatorInterface $paginator): Response
     {
         if ($request->isMethod(Request::METHOD_GET)) {
             $users = $userRepository->findAll();
 
+            $data = $paginator->paginate(
+                $users,
+                $request->query->getInt('page', 1),
+                10
+            );
+
             return $this->render('admin_user/list.html.twig', [
-                'users' => $users,
+                'users' => $data,
             ]);
         }
     }

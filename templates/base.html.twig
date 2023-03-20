@@ -1,13 +1,9 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta charset="UTF-8">
+        <meta name="robots" content="noindex, nofollow">
         <title>{% block title %}Welcome!{% endblock %}</title>
-        <link rel="stylesheet" href="/style.css" />
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Tangerine:wght@700&display=swap" rel="stylesheet">
-        <script src="https://kit.fontawesome.com/ba400c5ead.js" crossorigin="anonymous"></script>
+        {% include "head.html.twig" %}
     </head>
     <body>
 
@@ -19,6 +15,28 @@
         {% block body %}{% endblock %}
     </div>
       
+    <script> 
+        {# popover jquery #}
+        $(document).ready(function(){
+            $('[data-toggle="popover"]').popover();   
+        });
+
+        $('.popover-dismiss').popover({
+            trigger: 'focus'
+        })
+
+        {# select2 jquery #}
+        $(document).ready(function() {
+            $('.js-example-basic-multiple').select2();
+        });
+
+        $(document).ready(function(){
+            $("#toggle-btn").click(function(){
+                $("#toggle-example").collapse('toggle'); // toggle collapse
+            });
+        });
         
+    </script>
+
     </body>
 </html>

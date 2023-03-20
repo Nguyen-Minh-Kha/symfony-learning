@@ -1,0 +1,95 @@
+App\Entity\Genre:
+  genre_1:
+    name: "Science fiction"
+    description: "<en_EN:realText(100)>"
+    created_at: <datetimeBetween('-50 days', 'now')>
+    updated_at: <datetimeBetween('-50 days', 'now')>
+  genre_2:
+    name: "Policier"
+    description: "<en_EN:realText(100)>"
+    created_at: <datetimeBetween('-50 days', 'now')>
+    updated_at: <datetimeBetween('-50 days', 'now')>
+  genre_3:
+    name: "Drama"
+    description: "<en_EN:realText(100)>"
+    created_at: <datetimeBetween('-50 days', 'now')>
+    updated_at: <datetimeBetween('-50 days', 'now')>
+  genre_4:
+    name: "Literature"
+    description: "<en_EN:realText(100)>"
+    created_at: <datetimeBetween('-50 days', 'now')>
+    updated_at: <datetimeBetween('-50 days', 'now')>
+  genre_{5..25}:
+    name: "<en_EN:word()>"
+    description: "<en_EN:realText(100)>"
+    created_at: <datetimeBetween('-50 days', 'now')>
+    updated_at: <datetimeBetween('-50 days', 'now')>
+
+App\Entity\Author:
+  author_1:
+    name: "J.K Rowling"
+    description: "<en_EN:realText(100)>"
+    imageUrl: "<imageUrl()>"
+
+  author_{2..50}:
+    name: "<en_EN:name()>"
+    description: "<en_EN:realText(100)>"
+    imageUrl: "<imageUrl()>"
+
+App\Entity\PublishingHouse:
+  house_1:
+    name: Galimard
+    description: "<en_EN:realText(100)>"
+    country: "France"
+  house_{2..50}:
+    name: "<en_EN:company()>"
+    description: "<en_EN:realText(100)>"
+    country: "<en_EN:countryCode()>"
+
+App\Entity\Book:
+  book_1:
+    title: 'Harry Potter'
+    price: 5.95
+    author: '@author_1'
+    description: "<en_EN:realText(100)>"
+    imageUrl: "<imageUrl()>"
+    genres: "5x @genre_*"
+    publishingHouse: "@house_*"
+    created_at: <datetimeBetween('-50 days', 'now')>
+    updated_at: <datetimeBetween('-50 days', 'now')>
+
+  book_{2..50}:
+    title: "<en_EN:word()>"
+    price: "<randomFloat(2,5,30)>"
+    author: '@author_*'
+    description: "<en_EN:realText(100)>"
+    imageUrl: "<imageUrl()>"
+    genres: "5x @genre_*"
+    publishingHouse: "@house_*"
+    created_at: <datetimeBetween('-50 days', 'now')>
+    updated_at: <datetimeBetween('-50 days', 'now')>
+
+App\Entity\User:
+  user_admin:
+    email: "admin@mail.com"
+    roles: ["ROLE_ADMIN"]
+    #password: "password"
+    password: \$2y\$13\$RX6WCP2Um4QE5bAdSzkHuuku3lkbV8kuFMTh3NAPD5eMXuOQHqHqK
+    created_at: <datetimeBetween('-50 days', 'now')>
+    updated_at: <datetimeBetween('-50 days', 'now')>
+
+  user_user:
+    email: "user@mail.com"
+    roles: ["ROLE_USER"]
+    #password: "password"
+    password: \$2y\$13\$RX6WCP2Um4QE5bAdSzkHuuku3lkbV8kuFMTh3NAPD5eMXuOQHqHqK
+    created_at: <datetimeBetween('-50 days', 'now')>
+    updated_at: <datetimeBetween('-50 days', 'now')>
+
+  user_{1..50}:
+    email: "<safeEmail()>"
+    roles: ["ROLE_USER"]
+    #password: "password"
+    password: \$2y\$13\$RX6WCP2Um4QE5bAdSzkHuuku3lkbV8kuFMTh3NAPD5eMXuOQHqHqK
+    created_at: <datetimeBetween('-50 days', 'now')>
+    updated_at: <datetimeBetween('-50 days', 'now')>

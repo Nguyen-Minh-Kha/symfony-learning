@@ -10,6 +10,7 @@
                     <tr>
                         <th> Id </th>
                         <th> title </th>
+                        <th> Description </th>
                         <th> Created at </th>
                         <th> Updated at </th>
                         <th> Actions </th>
@@ -21,7 +22,8 @@
 
                     <tr>
                         <td>{{ genre.id }}</td>
-                        <td>{{ genre.title }}</td>
+                        <td>{{ genre.name }}</td>
+                        <td>{{ genre.description|length > 25 ? genre.description|slice(0,25) ~ '...' : genre.description }}</td>
                         <td>{{ genre.createdAt|date('d-m-Y') }}</td>
                         <td>{{ genre.updatedAt|date('d-m-Y') }}</td>
                         <td> 
@@ -40,4 +42,8 @@
                 <tbody>
             </table>
         </div>
+        
+            <nav class="pagination">
+	            {{ knp_pagination_render(genres) }}
+            </nav>
 {% endblock %}

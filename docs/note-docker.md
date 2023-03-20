@@ -47,3 +47,22 @@ bin/sf console do:sc:up --force
 ```
 bin/sf console ma:fo <name of form type>
 ```
+
+## create & run migration file
+
+```
+bin/sf console ma:mi 
+
+bin/sf console do:mi:mi 
+```
+## check migration diff
+
+```
+bin/sf console do:mi:diff
+```
+
+## fixtures load 
+
+```
+bin/sf console h:f:l
+```

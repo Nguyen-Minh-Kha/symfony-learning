@@ -1,12 +1,15 @@
 {% extends 'list-book.html.twig' %}
 
 {% block listing %}
-<div class="table-wrapper">
 <table class="fl-table">
     <thead>
         <tr>
-            <th> Id </th>
             <th> Title </th>
+            <th> Description </th>
+            <th> Author </th>
+            <th> Publishing House </th>
+            <th> Genres </th>
+            <th> Price </th>
             <th> Created at </th>
             <th> Updated at </th>
             <th> Actions </th>
@@ -14,10 +17,25 @@
     </thead>
     <tbody>
 {% for book in books %}
-
         <tr>
-            <td>{{ book.id }}</td>
             <td>{{ book.title }}</td>
+            <td>{{ book.description|length > 25 ? book.description|slice(0,25) ~ ('...') : book.description }}</td>
+            <td>
+             {% if book.author %}
+                {{ book.author.name }}
+            {% endif %}
+            </td>
+            <td>
+             {% if book.publishinghouse %}
+                {{ book.publishinghouse.name }}
+            {% endif %}
+            </td>
+            <td>
+             {% for genre in book.genres %}
+                {{ genre.name }}, 
+            {% endfor %}
+            </td>
+            <td>{{ book.price }}</td>
             <td>{{ book.createdAt|date('d-m-Y') }}</td>
             <td>{{ book.updatedAt|date('d-m-Y') }}</td>
             <td> 
@@ -35,6 +53,8 @@
 {% endfor %}
     <tbody>
 </table>
-</div>
+<nav class="pagination">
+	{{ knp_pagination_render(books) }}
+</nav>
 {% endblock %}
 

@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	{% if book %}
+		{{book.title}}
+	{% endif %}
+{% endblock %}
+
+{% block body %}
+
+	<div class="example-wrapper">
+		<h1>{{book.title}}</h1>
+		<p>by:
+			{{book.author ? book.author.name}}</p>
+		<ul>
+			<li>
+				Publishing House:
+				{{book.publishinghouse ? book.publishinghouse.name : ''}}
+			</li>
+			<li>
+				genres: 
+				{% for genre in book.genres %}
+					{{ genre.name }},
+				{% endfor %}
+			</li>
+            <li>
+				price: 
+				{{ book.price }} €
+			</li>
+		</ul</div>
+	{% endblock %}

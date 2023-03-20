@@ -1,70 +1,56 @@
-<div class="area">  </div><nav class="main-menu">
-            <ul>
-                <li class="has-subnav"> 
-                    <a href="{{ path('app_AdminBookController_list') }}">
-                        <i class="fa-solid fa-book fa-2x"></i>
-                        <span class="nav-text">
-                            Our Library
-                        </span>
-                    </a>
-                </li>
+{# <div class="area"></div> #}
+<nav class="main-menu">
+	<ul>
 
-                <li class="has-subnav"> 
-                    <a href="{{ path('app_AdminBookController_create') }}">
-                        <i class="fa-solid fa-circle-plus fa-2x"></i>
-                        <span class="nav-text">
-                            Add new book
-                        </span>
-                    </a>
-                </li>
+		<li class="has-subnav">
+			<a href="{{ path('app_home_index') }}">
+				<i class="fa-solid fa-house fa-2x"></i>
+				<span class="nav-text">
+					Home
+				</span>
+			</a>
+		</li>
 
-                <li class="has-subnav"> 
-                    <a href="{{ path('app_AdminUserController_list') }}">
-                        <i class="fa-solid fa-user fa-2x"></i>
-                        <span class="nav-text">
-                            List of users
-                        </span>
-                    </a>
-                </li>
+		{% if is_granted('ROLE_ADMIN') %}
+			{% include 'admin/sidebar.html.twig' %}
+		{% elseif is_granted('ROLE_USER') %}
 
-                <li class="has-subnav"> 
-                    <a href="{{ path('app_AdminUserController_create') }}">
-                        <i class="fa-solid fa-circle-plus fa-2x"></i>
-                        <span class="nav-text">
-                            Add new user
-                        </span>
-                    </a>
-                </li>
+			{% include 'user/sidebar.html.twig' %}
+		{% endif %}
 
-                <li class="has-subnav"> 
-                    <a href="{{ path('app_AdminGenreController_list') }}">
-                        <i class="fa-solid fa-scroll fa-2x"></i>
-                        <span class="nav-text">
-                            List of genres
-                        </span>
-                    </a>
-                </li>
 
-                <li class="has-subnav"> 
-                    <a href="{{ path('app_AdminGenreController_create') }}">
-                        <i class="fa-solid fa-circle-plus fa-2x"></i>
-                        <span class="nav-text">
-                            Add new genre
-                        </span>
-                    </a>
-                </li>
+	</ul>
 
-                
-            </ul>
 
-            {# <ul class="logout">
-                <li>
-                   <a href="#">
-                         <i class="fa fa-power-off fa-2x"></i>
-                        <span class="nav-text">
-                            Logout
-                        </span>
-                    </a>
-                </li>  
-            </ul> #}
-        </nav>
+	<ul class="logout">
+		{% if app.user %}
+
+			<li class="has-subnav">
+				<a href="{{ path('app_SecurityController_myProfile') }}">
+					<i class="fa-solid fa-user fa-2x"></i>
+					<span class="nav-text">
+						{{ app.user.userIdentifier }}
+					</span>
+				</a>
+			</li>
+
+			<li class="has-subnav">
+				<a href="{{ path('app_logout') }}">
+					<i class="fa-solid fa-right-from-bracket fa-2x"></i>
+					<span class="nav-text">
+						Logout
+					</span>
+				</a>
+			</li>
+		{% else %}
+			<li class="has-subnav">
+				<a href="{{ path('app_login') }}">
+					<i class="fa-solid fa-right-to-bracket fa-2x"></i>
+					<span class="nav-text">
+						Login
+					</span>
+				</a>
+			</li>
+		{% endif %}
+	</ul>
+</nav>
