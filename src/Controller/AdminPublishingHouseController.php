@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\PublishingHouse;
 use App\Form\PublishingHouseType;
 use App\Repository\PublishingHouseRepository;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -50,12 +51,18 @@ class AdminPublishingHouseController extends AbstractController
     * list of publishing houses 
     */
     #[Route('/admin/publishing-house', name: 'app_AdminPublishingHouseController_list', methods: ['GET'])]
-    public function list(PublishingHouseRepository $publishingHouseRepository): Response
+    public function list(PublishingHouseRepository $publishingHouseRepository, PaginatorInterface $paginator, Request $request): Response
     {
          $publishinghouses = $publishingHouseRepository->findAll();
 
+         $data = $paginator->paginate(
+            $publishinghouses,
+            $request->query->getInt('page', 1),
+            10
+        );
+
          return $this->render('admin_publishing_house/list.html.twig',[
-            'publishinghouses' => $publishinghouses,
+            'publishinghouses' => $data,
          ]);
     }
 

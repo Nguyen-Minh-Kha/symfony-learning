@@ -4,7 +4,6 @@
 
 {% block body %}
         <h1> Authors listing </h1>
-        <div class="table-wrapper">
             <table class="fl-table">
                 <thead>
                     <tr>
@@ -45,5 +44,7 @@
                     {% endfor %}
                 <tbody>
             </table>
-        </div>
+        <nav class="pagination">
+	            {{ knp_pagination_render(authors) }}
+            </nav>
 {% endblock %}

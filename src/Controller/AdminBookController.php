@@ -9,6 +9,7 @@ use App\Repository\AuthorRepository;
 use App\Repository\BookRepository;
 use App\Repository\GenreRepository;
 use App\Repository\PublishingHouseRepository;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -48,12 +49,18 @@ class AdminBookController extends AbstractController
     }
 
     #[Route('/admin/book', name: 'app_AdminBookController_list', methods: ['GET'])]
-    public function list(Request $request, BookRepository $repository): Response
+    public function list(Request $request, BookRepository $repository, PaginatorInterface $paginator): Response
     {
         if ($request->isMethod(Request::METHOD_GET)) {
             $books = $repository->findAll();
 
-            return $this->render('admin_book/list.html.twig', ['books' => $books]);
+            $data = $paginator->paginate(
+                $books,
+                $request->query->getInt('page', 1),
+                10
+            );
+
+            return $this->render('admin_book/list.html.twig', ['books' => $data]);
         }
     }
 

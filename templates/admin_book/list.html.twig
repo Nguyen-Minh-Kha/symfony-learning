@@ -17,7 +17,6 @@
     </thead>
     <tbody>
 {% for book in books %}
-
         <tr>
             <td>{{ book.title }}</td>
             <td>{{ book.description|length > 25 ? book.description|slice(0,25) ~ ('...') : book.description }}</td>
@@ -54,5 +53,8 @@
 {% endfor %}
     <tbody>
 </table>
+<nav class="pagination">
+	{{ knp_pagination_render(books) }}
+</nav>
 {% endblock %}
 

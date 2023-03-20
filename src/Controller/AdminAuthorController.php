@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Author;
 use App\Form\AuthorType;
 use App\Repository\AuthorRepository;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -46,12 +47,18 @@ class AdminAuthorController extends AbstractController
     * List of authors 
     */
     #[Route('/admin/author', name: 'app_AdminAuthorController_list', methods: ['GET'])]
-    public function list(Request $request, AuthorRepository $authorRepository): Response
+    public function list(Request $request, AuthorRepository $authorRepository, PaginatorInterface $paginator): Response
     {
         $authors = $authorRepository->findAll();
 
+        $data = $paginator->paginate(
+            $authors,
+            $request->query->getInt('page', 1),
+            10
+        );
+
         return $this->render('admin_author/list.html.twig', [
-            'authors' => $authors
+            'authors' => $data
         ]);
     }
 

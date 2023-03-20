@@ -6,6 +6,7 @@ use DateTime;
 use App\Entity\Genre;
 use App\Form\GenreType;
 use App\Repository\GenreRepository;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -46,13 +47,18 @@ class AdminGenreController extends AbstractController
     }
 
     #[Route('/admin/genres', name: "app_AdminGenreController_list", methods: ['GET'])]
-    public function list(Request $request, GenreRepository $genreRepository): Response
+    public function list(Request $request, GenreRepository $genreRepository, PaginatorInterface $paginator): Response
     {
         if ($request->isMethod(Request::METHOD_GET)) {
             $genres = $genreRepository->findAll();
 
+            $data = $paginator->paginate(
+                $genres,
+                $request->query->getInt('page', 1),
+                10
+            );
             return $this->render('admin_genre/list.html.twig', [
-                'genres' => $genres,
+                'genres' => $data,
             ]);
         }
     }
