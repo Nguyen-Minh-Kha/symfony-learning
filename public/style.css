@@ -141,8 +141,8 @@ nav.main-menu li.active > a,
 /* content css */
 
 .content-wrapper {
-  margin: 1em auto;
-  max-width: 800px;
+  margin: 0.5em auto;
+  max-width: fit-content;
   width: 95%;
   font: 18px/1.5 sans-serif;
 }

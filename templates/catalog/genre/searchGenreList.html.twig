@@ -12,7 +12,17 @@
 		Here you can find our list of genre or you can fill the form to find a specific genre
 	</p>
 
-	{{ form(form)}}
+	<div> 
+				<button type="button" class="btn btn-primary" id="toggle-btn" data-toggle="collapse" data-target="#toggle-example" aria-expanded="false" aria-controls="collapseExample">
+					Click me
+				</button>
+
+				<div id="toggle-example" class="collapse">
+					{{ form(form)}}
+				</div>
+			</div>
+
+            
 	</br>
 	<table class="fl-table">
 		<thead>
