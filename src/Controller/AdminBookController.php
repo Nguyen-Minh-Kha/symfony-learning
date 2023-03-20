@@ -5,7 +5,10 @@ namespace App\Controller;
 use App\Entity\Book;
 use DateTime;
 use App\Form\BookType;
+use App\Repository\AuthorRepository;
 use App\Repository\BookRepository;
+use App\Repository\GenreRepository;
+use App\Repository\PublishingHouseRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -55,10 +58,20 @@ class AdminBookController extends AbstractController
     }
 
     #[Route('/admin/book/{id}', name: 'app_AdminBookController_update', methods: ['GET', 'POST'])]
-    public function update(Request $request, BookRepository $repository, Book $book): Response
+    public function update(Request $request, 
+    BookRepository $repository, 
+    Book $book,
+    AuthorRepository $authorRepository,
+    GenreRepository $genreRepository,
+    PublishingHouseRepository $publishingHouseRepository
+    ): Response
     {
+        
         $form = $this->createForm(BookType::class, $book, [
-            'mode' => 'update'
+            'mode' => 'update',
+            'authors' => $authorRepository->findAll(),
+            'genres' => $genreRepository->findAll(),
+            'houses' => $publishingHouseRepository->findAll(),
         ]);
 
         $form->handleRequest($request);

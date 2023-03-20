@@ -1,7 +1,7 @@
 {% block select2_widget %}
     <select {{ block('widget_attributes') }} 
     class="js-example-basic-multiple"
-    multiple="multiple"
+    {{form.vars.multiple ? 'multiple="multiple"' : ""}}
     style="width: 100%">
         {% if data_length == value|length %}
             {% for choice in choices %}
