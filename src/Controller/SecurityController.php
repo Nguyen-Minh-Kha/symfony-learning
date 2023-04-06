@@ -34,6 +34,8 @@ class SecurityController extends AbstractController
                 ->setCreatedAt(new DateTime())
                 ->setUpdatedAt(new DateTime());
 
+            $user->setRoles(['ROLE_USER']);
+
             $cryptedPass = $hasher->hashPassword($user, $user->getPassword());
 
             $user->setPassword($cryptedPass);
