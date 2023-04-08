@@ -22,25 +22,31 @@ class SecurityController extends AbstractController
     #[Route('/signup', name: 'app_SecurityController_signup')]
     public function signup(UserRepository $userRepository, Request $request, UserPasswordHasherInterface $hasher): Response
     {
+        // create form to sign up
         $form = $this->createForm(RegistrationType::class);
 
+        // listens to any request
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             
+            // gets users inputs
             $user = $form->getData();
 
+            // set user's infos
             $user
                 ->setCreatedAt(new DateTime())
-                ->setUpdatedAt(new DateTime());
+                ->setUpdatedAt(new DateTime())
+                ->setRoles(['ROLE_USER']);
 
+            // encrypt the user's password and save in Database
             $cryptedPass = $hasher->hashPassword($user, $user->getPassword());
 
             $user->setPassword($cryptedPass);
 
             $userRepository->save($user, true);
 
-            return $this->redirectToRoute('app_home_index');
+            return $this->redirectToRoute('app_login');
         }
 
         return $this->render('security/signup.html.twig', [
