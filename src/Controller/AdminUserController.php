@@ -11,11 +11,12 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class AdminUserController extends AbstractController
 {
     #[Route('/admin/users/create', name: "app_AdminUserController_create", methods: ['GET', 'POST'])]
-    public function create(Request $request, UserRepository $userRepository): Response
+    public function create(Request $request, UserRepository $userRepository, UserPasswordHasherInterface $hasher): Response
     {
         //create form and render 
         $form = $this->createForm(UserType::class);
@@ -27,8 +28,13 @@ class AdminUserController extends AbstractController
             $user = $form->getData();
 
             $user
+                ->setRoles($user->getRoles()[0])
                 ->setCreatedAt(new DateTime())
                 ->setUpdatedAt(new DateTime());
+
+            $cryptedPass = $hasher->hashPassword($user, $user->getPassword());
+
+            $user->setPassword($cryptedPass);
 
             $userRepository->save($user, true);
 
@@ -59,7 +65,7 @@ class AdminUserController extends AbstractController
     }
 
     #[Route('/admin/users/{id}', name: "app_AdminUserController_update", methods: ['GET', 'POST'])]
-    public function update(User $user, Request $request, UserRepository $userRepository): Response
+    public function update(User $user, Request $request, UserRepository $userRepository, UserPasswordHasherInterface $hasher): Response
     {
         $form = $this->createForm(UserType::class, $user, [
             'mode' => 'update'
@@ -70,6 +76,11 @@ class AdminUserController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $user = $form->getData();
             $user->setUpdatedAt(new DateTime());
+
+            $cryptedPass = $hasher->hashPassword($user, $user->getPassword());
+
+            $user->setPassword($cryptedPass);
+            
             $userRepository->save($user, true);
 
             return $this->redirectToRoute('app_AdminUserController_list');
