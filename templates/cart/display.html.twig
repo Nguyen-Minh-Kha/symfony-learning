@@ -1,0 +1,98 @@
+{% extends 'list-book.html.twig' %}
+
+{% block title %}My cart{% endblock %}
+
+{% block bodyTitle %} Your cart {% endblock %}
+
+{% block listing %}
+
+{% if app.user.cart.books|length == 0 %}
+    <h2> your cart is currently empty you can check our <a href="{{path('app_BookController_searchBookList')}}">catalog</a> to add books in your cart.</h2>
+{% else %}
+
+    <table class="fl-table">
+        <thead>
+            <tr>
+                <th> Title </th>
+                <th> Author </th>
+                <th> Publishing House </th>
+                <th> Price </th>
+                <th> NB </th>
+                <th> Actions </th>
+                <th> Total </th>
+            </tr>
+        </thead>
+        <tbody>
+    {% for book in books %}
+            <tr>
+                <td>{{ book.title }}</td>
+                <td>
+                {% if book.author %}
+                    {{ book.author.name }}
+                {% endif %}
+                </td>
+                <td>
+                {% if book.publishinghouse %}
+                    {{ book.publishinghouse.name }}
+                {% endif %}
+                </td>
+                <td id="bookPrice">{{ book.price }}</td>
+                <td> <input id="number" type="number" value="1" > </input> </td>
+                <td> 
+                    <a href="#">
+                    <i class="fa-solid fa-trash"></i>
+                    </a>
+                </td>
+                <td id="total">
+
+                </td>
+            </tr>
+
+    {% endfor %}
+        <tbody>
+    </table>
+    <nav class="pagination">
+        {{ knp_pagination_render(books) }}
+    </nav>
+{% endif %}
+
+<script>
+
+
+const input = document.querySelectorAll("#number");
+
+const bookPrice = document.querySelectorAll("#bookPrice");
+
+const result = document.querySelectorAll('#total');
+
+
+function totalPrice (bookPrice, number) {
+    return parseFloat(bookPrice)*parseFloat(number);
+}
+
+function handleInputs (e,i) {
+    
+    result[i].innerHTML = totalPrice(bookPrice[i].innerHTML,e);
+
+    if(!e){
+        result[i].innerHTML = 0;
+    }
+
+}
+
+for(let i = 0; i < input.length; i++) {
+    input[i].addEventListener('input', (e) => handleInputs(e.target.value,i))
+}
+       
+{# $(document).ready(()=> {
+    $('#total').text(bookPrice * input.value);
+}); #}
+
+$('*[id*=total]:visible').each(function(i) {
+   $(this).text(totalPrice(input[i].value, bookPrice[i].innerHTML));
+});
+
+</script>
+
+{% endblock %}
+

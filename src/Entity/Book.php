@@ -45,9 +45,13 @@ class Book
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $imageUrl = null;
 
+    #[ORM\ManyToMany(targetEntity: Cart::class, mappedBy: 'books')]
+    private Collection $carts;
+
     public function __construct()
     {
         $this->genres = new ArrayCollection();
+        $this->carts = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -174,6 +178,33 @@ class Book
     public function setImageUrl(?string $imageUrl): self
     {
         $this->imageUrl = $imageUrl;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Cart>
+     */
+    public function getCarts(): Collection
+    {
+        return $this->carts;
+    }
+
+    public function addCart(Cart $cart): self
+    {
+        if (!$this->carts->contains($cart)) {
+            $this->carts->add($cart);
+            $cart->addBook($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCart(Cart $cart): self
+    {
+        if ($this->carts->removeElement($cart)) {
+            $cart->removeBook($this);
+        }
 
         return $this;
     }
