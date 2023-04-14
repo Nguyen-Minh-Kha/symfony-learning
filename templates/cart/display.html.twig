@@ -2,7 +2,7 @@
 
 {% block title %}My cart{% endblock %}
 
-{% block bodyTitle %} Your cart {% endblock %}
+{% block bodyTitle %} Cart {% endblock %}
 
 {% block listing %}
 
@@ -23,7 +23,12 @@
             </tr>
         </thead>
         <tbody>
-    {% for book in books %}
+        {{form_start(form)}}
+    {% for index,book in books %}
+        {% if index < form.numberOfBooks|length %}
+        
+        {% set field = form.numberOfBooks[index] %}
+        
             <tr>
                 <td>{{ book.title }}</td>
                 <td>
@@ -37,9 +42,13 @@
                 {% endif %}
                 </td>
                 <td id="bookPrice">{{ book.price }}</td>
-                <td> <input id="number" type="number" value="1" > </input> </td>
+                <td>
+                
+                 <input type="number" name="{{field.vars.full_name}}" value="{{field.vars.value}}" id="number"> 
+                 
+                 </td>
                 <td> 
-                    <a href="#">
+                    <a href="{{path('app_CartController_deteleBook', {id: book.id})}}" title="Delete from cart">
                     <i class="fa-solid fa-trash"></i>
                     </a>
                 </td>
@@ -47,15 +56,15 @@
 
                 </td>
             </tr>
-
+        {% endif %}
     {% endfor %}
         <tbody>
     </table>
-    <nav class="pagination">
-        {{ knp_pagination_render(books) }}
-    </nav>
+    {{ form_widget(form.Checkout) }}
+    {{ form_end(form, {render_rest: false}) }}
 {% endif %}
 
+<a class="btn btn-primary" href="{{ path('app_BookController_searchBookList')}}" role="button">Add more books</a>
 <script>
 
 
@@ -83,10 +92,6 @@ function handleInputs (e,i) {
 for(let i = 0; i < input.length; i++) {
     input[i].addEventListener('input', (e) => handleInputs(e.target.value,i))
 }
-       
-{# $(document).ready(()=> {
-    $('#total').text(bookPrice * input.value);
-}); #}
 
 $('*[id*=total]:visible').each(function(i) {
    $(this).text(totalPrice(input[i].value, bookPrice[i].innerHTML));
