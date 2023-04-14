@@ -46,7 +46,11 @@
 							Genres
 						</th>
 						<th>
-							Price</th>
+							Price
+						</th>
+						<th>
+							Actions
+						</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -76,6 +80,11 @@
 								{% endfor %}
 							</td>
 							<td>{{ book.price }}</td>
+							<td>
+								<a href="{{path('app_CartController_addBook', {id: book.id})}}">
+                    				<i class="fa-solid fa-cart-plus" title="Add to cart"></i>
+                    			</a>
+							</td>
 
 						</tr>
 					{% endfor %}
