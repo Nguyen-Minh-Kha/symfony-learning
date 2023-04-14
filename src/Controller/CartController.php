@@ -2,7 +2,9 @@
 
 namespace App\Controller;
 
+use App\DTO\NumberOfBooksInCart;
 use App\Entity\Book;
+use App\Form\NumberOfBooksInCartType;
 use App\Repository\CartRepository;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Response;
@@ -28,17 +30,68 @@ class CartController extends AbstractController
     }
 
     /**
+    * check arrayOne is countable then add the number of default values into the array of DTO in 2nd parameter
+    */
+    public function addDefaultNumber($arrayOne, NumberOfBooksInCart $arrayTwo)
+    {
+        if(is_countable($arrayOne)){
+            for($i = 0; $i < count($arrayOne); $i++){
+                $arrayTwo->initialize( 1);
+            }
+        }
+    }
+
+    /**
     * display the user's cart
     */
     #[Route('/cart', name: 'app_CartController_displayCart')]
-    public function displayCart(PaginatorInterface $paginator, Request $request): Response
+    public function displayCart(Request $request, NumberOfBooksInCart $numberOfBooksInCart): Response
+    {
+        $user = $this->getUser();
+   
+        if($user) {
+            $cart = $user->getCart();
+
+            if ($cart->getBooks()) {
+                $data = $cart->getBooks();
+                $this->addDefaultNumber($data, $numberOfBooksInCart);
+            } else {
+                $data = null;
+            }
+
+            $form = $this->createForm(NumberOfBooksInCartType::class, $numberOfBooksInCart);
+
+            $form->handleRequest($request);
+            
+            if ($form->isSubmitted() && $form->isValid()){
+                $numberOfBooksInCart = $form->getData();
+
+                dd($numberOfBooksInCart);
+            }
+            
+            return $this->render('cart/display.html.twig',[
+                'books' => $data,
+                'form' => $form->createView(),
+            ]);
+        } else {
+            return $this->redirectToRoute('app_login');
+        }
+    }
+
+    /**
+    * delete book from cart
+    */
+    #[Route('/cart/{id}/delete', name: 'app_CartController_deteleBook')]
+    public function deteleBook(CartRepository $cartRepository, Book $book, PaginatorInterface $paginator, Request $request): Response
     {
         $user = $this->getUser();
 
-        // dd($user);
-
-        if($user) {
+        if($user){
             $cart = $user->getCart();
+
+            $cart->removeBook($book);
+
+            $cartRepository->save($cart, true);
 
             if ($cart->getBooks()) {
                 $data = $paginator->paginate(
@@ -49,10 +102,11 @@ class CartController extends AbstractController
             } else {
                 $data = null;
             }
-            
+
             return $this->render('cart/display.html.twig',[
                 'books' => $data,
             ]);
+
         } else {
             return $this->redirectToRoute('app_login');
         }
