@@ -67,4 +67,17 @@ class Cart
 
         return $this;
     }
+
+    /**
+    * remove all books 
+    */
+    public function removeAllBooks(): self
+    {
+        foreach ($this->getBooks() as $book) {
+            $this->removeBook($book);
+        }
+
+        return $this;
+     
+    }
 }
