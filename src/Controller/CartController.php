@@ -36,7 +36,7 @@ class CartController extends AbstractController
     {
         if(is_countable($arrayOne)){
             for($i = 0; $i < count($arrayOne); $i++){
-                $arrayTwo->initialize( 1);
+                $arrayTwo->initialize(1);
             }
         }
     }
@@ -45,7 +45,10 @@ class CartController extends AbstractController
     * display the user's cart
     */
     #[Route('/cart', name: 'app_CartController_displayCart')]
-    public function displayCart(Request $request, NumberOfBooksInCart $numberOfBooksInCart): Response
+    public function displayCart(
+        Request $request, 
+        NumberOfBooksInCart $numberOfBooksInCart
+        ): Response
     {
         $user = $this->getUser();
    
@@ -64,9 +67,16 @@ class CartController extends AbstractController
             $form->handleRequest($request);
             
             if ($form->isSubmitted() && $form->isValid()){
+                $total = 0;
                 $numberOfBooksInCart = $form->getData();
+                for ($i=0; $i < $numberOfBooksInCart->getLength(); $i++) { 
+                    $total += $numberOfBooksInCart->numberOfBooks[$i] * $data->toArray()[$i]->getPrice();
+                }
 
-                dd($numberOfBooksInCart);
+                $orderData = ['total' => $total, 'numberOfBooksInCart' => $numberOfBooksInCart->numberOfBooks];
+                
+                return $this->redirectToRoute('app_OrderController_new', ['data' => $orderData]);
+                
             }
             
             return $this->render('cart/display.html.twig',[
@@ -93,19 +103,7 @@ class CartController extends AbstractController
 
             $cartRepository->save($cart, true);
 
-            if ($cart->getBooks()) {
-                $data = $paginator->paginate(
-                    $cart->getBooks(),
-                    $request->query->getInt('page', 1),
-                    10
-                );
-            } else {
-                $data = null;
-            }
-
-            return $this->render('cart/display.html.twig',[
-                'books' => $data,
-            ]);
+            return $this->redirectToRoute('app_CartController_displayCart');
 
         } else {
             return $this->redirectToRoute('app_login');
