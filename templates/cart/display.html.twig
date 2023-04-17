@@ -44,7 +44,7 @@
                 <td id="bookPrice">{{ book.price }}</td>
                 <td>
                 
-                 <input type="number" name="{{field.vars.full_name}}" value="{{field.vars.value}}" id="number"> 
+                 <input type="number" name="{{field.vars.full_name}}" value="{{field.vars.value}}" id="number" min="1"> 
                  
                  </td>
                 <td> 
@@ -60,6 +60,11 @@
     {% endfor %}
         <tbody>
     </table>
+
+    {% if app.user.cart.books|length > 0 %}
+    <h2>Total : <span id="cartTotal"></span> </h2> 
+    {% endif %}
+
     {{ form_widget(form.Checkout) }}
     {{ form_end(form, {render_rest: false}) }}
 {% endif %}
@@ -74,9 +79,14 @@ const bookPrice = document.querySelectorAll("#bookPrice");
 
 const result = document.querySelectorAll('#total');
 
+const cartTotal = document.getElementById('cartTotal'); 
+
+function roundNumber(number) {
+    return Math.round(number * 100)/100;
+}
 
 function totalPrice (bookPrice, number) {
-    return parseFloat(bookPrice)*parseFloat(number);
+    return roundNumber(parseFloat(bookPrice)*parseFloat(number));
 }
 
 function handleInputs (e,i) {
@@ -86,7 +96,16 @@ function handleInputs (e,i) {
     if(!e){
         result[i].innerHTML = 0;
     }
+    updateCartTotal()
+}
 
+function updateCartTotal(){
+    const numbers = [];
+    result.forEach(elt => {
+        numbers.push(parseFloat(elt.textContent));
+    });
+    const sum = roundNumber(numbers.reduce((a,c)=>a+c,0));
+    cartTotal.innerHTML = sum;
 }
 
 for(let i = 0; i < input.length; i++) {
@@ -96,6 +115,8 @@ for(let i = 0; i < input.length; i++) {
 $('*[id*=total]:visible').each(function(i) {
    $(this).text(totalPrice(input[i].value, bookPrice[i].innerHTML));
 });
+
+$('#cartTotal').load(updateCartTotal());
 
 </script>
 
