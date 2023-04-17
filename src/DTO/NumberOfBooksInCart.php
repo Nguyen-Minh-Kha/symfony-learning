@@ -13,5 +13,17 @@ class NumberOfBooksInCart {
     {
         array_push($this->numberOfBooks,$number);
     }
+
+    /**
+    * return the length of the array of books in the user's cart 
+    */
+    public function getLength()
+    {
+        if(is_countable($this->numberOfBooks)){
+            return count($this->numberOfBooks);
+        } else {
+            return 0;
+        }
+    }
 }
 
