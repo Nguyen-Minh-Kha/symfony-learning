@@ -48,10 +48,14 @@ class Book
     #[ORM\ManyToMany(targetEntity: Cart::class, mappedBy: 'books')]
     private Collection $carts;
 
+    #[ORM\ManyToMany(targetEntity: Order::class, mappedBy: 'books')]
+    private Collection $orders;
+
     public function __construct()
     {
         $this->genres = new ArrayCollection();
         $this->carts = new ArrayCollection();
+        $this->orders = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -204,6 +208,33 @@ class Book
     {
         if ($this->carts->removeElement($cart)) {
             $cart->removeBook($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Order>
+     */
+    public function getOrders(): Collection
+    {
+        return $this->orders;
+    }
+
+    public function addOrder(Order $order): self
+    {
+        if (!$this->orders->contains($order)) {
+            $this->orders->add($order);
+            $order->addBook($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOrder(Order $order): self
+    {
+        if ($this->orders->removeElement($order)) {
+            $order->removeBook($this);
         }
 
         return $this;
