@@ -94,7 +94,7 @@ class SecurityController extends AbstractController
                 
                 $userRepository->save($user,true);
                 
-                return $this->redirectToRoute('app_home_index');
+                return $this->redirectToRoute('app_SecurityController_myProfile');
             }
             return $this->render('security/myProfile.html.twig',[
                 'form' => $form->createView()
