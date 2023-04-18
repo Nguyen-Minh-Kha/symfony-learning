@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: OrderRepository::class)]
 #[ORM\Table(name: '`order`')]
@@ -32,6 +33,9 @@ class Order
 
     #[ORM\ManyToMany(targetEntity: Book::class, inversedBy: 'orders')]
     private Collection $books;
+
+    #[ORM\Column(type: 'uuid')]
+    private ?Uuid $uuid = null;
 
     public function __construct()
     {
@@ -115,6 +119,18 @@ class Order
     public function removeBook(Book $book): self
     {
         $this->books->removeElement($book);
+
+        return $this;
+    }
+
+    public function getUuid(): ?Uuid
+    {
+        return $this->uuid;
+    }
+
+    public function setUuid(Uuid $uuid): self
+    {
+        $this->uuid = $uuid;
 
         return $this;
     }
