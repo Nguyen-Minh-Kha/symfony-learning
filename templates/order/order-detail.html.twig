@@ -1,14 +1,22 @@
 {% extends 'list-book.html.twig' %}
 
-{% block title %}Order Confirmation{% endblock %}
+{% block title %}Order {{order.id}} {% endblock %}
 
-{% block bodyTitle %} Confirmation of your order {% endblock %}
+{% block bodyTitle %}
+
+    {% if order is null %}
+        This order doesn't exist 
+    {% else %}
+        Order {{order.id}} 
+    {% endif %}
+
+{% endblock %}
 
 {% block listing %}
 
-{% if app.user.cart.books|length == 0 %}
-    <h2> your cart is currently empty you can check our <a href="{{path('app_BookController_searchBookList')}}">catalog</a> to add books in your cart.</h2>
-{% else %}
+    {% if order is null %}
+        <h1> This order doesn't exist </h1>
+    {% else %}
 
     <table class="fl-table">
         <thead>
@@ -23,9 +31,9 @@
         </thead>
         <tbody>
 
-    {% for index,book in books %}
-        {% if index < numberOfBooksInCart|length %}
-            {% set nb = numberOfBooksInCart[index] %}
+    {% for index,book in order.books %}
+        {% if index < order.numberOfBooksInCart|length %}
+            {% set nb = order.numberOfBooksInCart[index] %}
 
                         <tr>
                     <td>{{ book.title }}</td>
@@ -50,11 +58,9 @@
         <tbody>
     </table>
 
-    {% if app.user.cart.books|length > 0 %}
-    <h2>Total : {{total}} </h2> 
+    {% if order.books|length > 0 %}
+    <h2>Total : {{order.totalPrice}} </h2> 
     {% endif %}
-    {{form_start(form)}}
-    {{ form_widget(form.Purchase) }}
-    {{ form_end(form, {render_rest: false}) }}
-{% endif %}
+    <a class="btn btn-primary" href="{{ path('app_OrderController_showHistory')}}" role="button">Back to my history</a>
+    {% endif %}
 {% endblock %}

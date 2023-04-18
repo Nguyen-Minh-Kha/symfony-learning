@@ -66,4 +66,41 @@ class OrderController extends AbstractController
             return $this->redirectToRoute('app_login');
         }
     }
+
+    /**
+    * get the user's history of orders
+    */
+    #[Route('/order/history', name: 'app_OrderController_showHistory')]
+    public function showHistory(): Response
+    {
+        $user = $this->getUser();
+
+        if ($user){
+            $orders = $user->getOrders();
+
+            return $this->render('order/order-history.html.twig', [
+                'orders' => $orders,
+            ]);
+            
+        } else {
+            return $this->redirectToRoute('app_login');
+        }
+    }
+
+    /**
+    * get the details of a user's order
+    */
+    #[Route('/order/{id}', name: 'app_OrderController_showOrder')]
+    public function showOrder(Order $order): Response
+    {
+        $user = $this->getUser();
+
+        if($user){
+            return $this->render('order/order-detail.html.twig',[
+                'order' => $order,
+            ]);
+        } else {
+            return $this->redirectToRoute('app_login');
+        }
+    }
 }
