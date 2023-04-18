@@ -2,18 +2,15 @@
 
 {% block title %}Orders history{% endblock %}
 
-{% block bodyTitle %} Your oders history {% endblock %}
+{% block bodyTitle %} Every uers oders history {% endblock %}
 
 {% block listing %}
-
-{% if app.user.orders|length == 0 %}
-    <h2> You currently don't have any orders </h2>
-{% else %}
 
     <table class="fl-table">
         <thead>
             <tr>
                 <th> Id </th>
+                <th> User Id </th>
                 <th> Total </th>
                 <th> Ordered date </th>
             </tr>
@@ -22,13 +19,13 @@
 
     {% for order in orders %}
         <tr>
-            <td><a href="{{path('app_OrderController_showOrder',{id:order.id} )}}"> {{ order.id }} </a> </td>
-            <td>{{order.totalPrice}}</td>
-            <td>{{order.orderedDate|date('d-m-Y')}}</td>
+            <td> <a href="{{path('app_OrderController_showOrder',{id:order.id} )}}"> {{ order.id }} </a> </td>
+            <td> <a href="{{ path('app_AdminUserController_update', {id: order.user.id}) }}"> {{order.user.id}} </a> </td>
+            <td> {{order.totalPrice}} </td>
+            <td> {{order.orderedDate|date('d-m-Y')}} </td>
         </tr>
         
     {% endfor %}
         <tbody>
     </table>
-{% endif %}
 {% endblock %}
