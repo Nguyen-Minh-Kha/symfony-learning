@@ -26,9 +26,19 @@ class AdminBookController extends AbstractController
     // }
 
     #[Route('/admin/book/create', name: 'app_AdminBookController_create', methods: ['GET', 'POST'])]
-    public function create(Request $request, BookRepository $repository): Response
+    public function create(
+        Request $request, 
+        BookRepository $repository,
+        AuthorRepository $authorRepository,
+        GenreRepository $genreRepository,
+        PublishingHouseRepository $publishingHouseRepository
+        ): Response
     {
-        $form = $this->createForm(BookType::class);
+        $form = $this->createForm(BookType::class,null ,[
+            'authors' => $authorRepository->findAll(),
+            'genres' => $genreRepository->findAll(),
+            'houses' => $publishingHouseRepository->findAll(),
+        ]);
 
         $form->handleRequest($request);
 
