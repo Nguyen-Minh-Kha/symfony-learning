@@ -26,10 +26,20 @@ class AdminOrderController extends AbstractController
         ]);
     }
 
+    /**
+    * get last x values of an array 
+    */
+    public function getLastXValuesOfAnArray(array $array, int $x)
+    {
+        sort($array);
+        return array_slice($array, -$x);
+    }
+
     // todo: show order details with a form and be able to update a user's order
 
     /**
-    * show order details as admin 
+    * show order details as admin and update the order
+    * TODO: What to do when we change the price to an order that is already paid ? 
     */
     #[Route('/admin/order/{id}', name: 'app_AdminOrderController_update')]
     public function update(Order $order, Request $request, OrderRepository $orderRepository): Response
@@ -43,6 +53,25 @@ class AdminOrderController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            $totalPrice = 0;
+
+            $data = $form->getData();
+            $numberOfBooks = $this->getLastXValuesOfAnArray($data->numberOfBooks, count($order->getBooks()));
+            
+            foreach ($numberOfBooks as $key => $value) {
+                $totalPrice += $value * $order->getBooks()[$key]->getPrice();
+            }
+            
+            $order->setTotalPrice($totalPrice);
+            
+            $order->setNumberOfBooksInCart($numberOfBooks);
+
+            $orderRepository->save($order, true);
+
+            return $this->redirectToRoute('app_AdminOrderController_update', [
+                'id' => $order->getId(),
+            ]);
 
         } else {
             return $this->render('admin_order/update.html.twig', [
