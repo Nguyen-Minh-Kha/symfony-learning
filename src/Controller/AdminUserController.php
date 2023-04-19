@@ -71,6 +71,9 @@ class AdminUserController extends AbstractController
             'mode' => 'update'
         ]);
 
+        // show all orders of a user
+        $orders = $user->getOrders();
+
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -89,6 +92,7 @@ class AdminUserController extends AbstractController
         return $this->render('admin_user/update.html.twig', [
             'user' => $user,
             'userForm' => $form->createView(),
+            'orders' => $orders,
         ]);
     }
 
