@@ -41,6 +41,15 @@ class CartController extends AbstractController
         }
     }
 
+     /**
+    * get last x values of an array 
+    */
+    public function getLastXValuesOfAnArray(array $array, int $x)
+    {
+        sort($array);
+        return array_slice($array, -$x);
+    }
+
     /**
     * display the user's cart
     */
@@ -68,14 +77,15 @@ class CartController extends AbstractController
             
             if ($form->isSubmitted() && $form->isValid()){
                 $total = 0;
-                $numberOfBooksInCart = $form->getData();
-                for ($i=0; $i < $numberOfBooksInCart->getLength(); $i++) { 
-                    $total += $numberOfBooksInCart->numberOfBooks[$i] * $data->toArray()[$i]->getPrice();
+                $numberOfBooksInCart = $this->getLastXValuesOfAnArray($numberOfBooksInCart->numberOfBooks, count($data));
+
+                foreach ($numberOfBooksInCart as $key => $value) {
+                    $total += $value * $data[$key]->getPrice();
                 }
                 
                 return $this->redirectToRoute('app_OrderController_new', [
                     'total' => $total,
-                    'numberOfBooksInCart' => $numberOfBooksInCart->numberOfBooks,
+                    'numberOfBooksInCart' => $numberOfBooksInCart,
                 ]);
                 
             }
