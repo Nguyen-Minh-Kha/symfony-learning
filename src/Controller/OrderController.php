@@ -2,11 +2,12 @@
 
 namespace App\Controller;
 
-use App\Entity\Order;
-use App\Form\OrderConfirmationType;
-use App\Repository\CartRepository;
-use App\Repository\OrderRepository;
 use DateTime;
+use App\Entity\Order;
+use Symfony\Component\Uid\Uuid;
+use App\Repository\CartRepository;
+use App\Form\OrderConfirmationType;
+use App\Repository\OrderRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -23,7 +24,10 @@ class OrderController extends AbstractController
         $user = $this->getUser();
 
         if ($user && count($user->getCart()->getBooks())!==0){
-            $data = $request->get('data');
+
+            $total = $request->get('total');
+
+            $numberOfBooksInCart = $request->get('numberOfBooksInCart');
 
             $cart = $user->getCart();
 
@@ -32,35 +36,38 @@ class OrderController extends AbstractController
             $form->handleRequest($request);
 
             if($form->isSubmitted()){
+
+                $uuid = Uuid::v6()->toRfc4122();
+
                 $order = new Order();
 
                 $order->setUser($user);
+    
+                    foreach ($cart->getBooks() as $book){
+                        $order->addBook($book);
+                    }
+    
+                    $order->setTotalPrice($total)
+                    ->setNumberOfBooksInCart($numberOfBooksInCart)
+                    ->setOrderedDate(new DateTime())
+                    ->setUuid($uuid);
 
-                foreach ($cart->getBooks() as $book){
-                    $order->addBook($book);
-                }
+                    $user->addOrder($order);
 
-                $order->setTotalPrice($data['total'])
-                ->setNumberOfBooksInCart($data['numberOfBooksInCart'])
-                ->setOrderedDate(new DateTime());
+                    $orderRepository->save($order,true);
 
-                $user->addOrder($order);
-
-                $orderRepository->save($order,true);
-
-                $cart->removeAllBooks();
-
-                $cartRepository->save($cart,true);
-
-                return $this->redirectToRoute('app_CartController_displayCart');
+                return $this->redirectToRoute('app_stripe', [
+                    'total' => $total,
+                    'uuid' => $uuid,
+                ]);
 
             }
 
             return $this->render('order/order-confirmation.html.twig', [
                 'form' => $form->createView(),
                 'books' => $cart->getBooks(),
-                'numberOfBooksInCart' => $data["numberOfBooksInCart"],
-                'total' => $data['total']
+                'numberOfBooksInCart' => $numberOfBooksInCart,
+                'total' => $total
             ]);
         } else {
             return $this->redirectToRoute('app_login');
@@ -99,6 +106,37 @@ class OrderController extends AbstractController
             return $this->render('order/order-detail.html.twig',[
                 'order' => $order,
             ]);
+        } else {
+            return $this->redirectToRoute('app_login');
+        }
+    }
+
+    /**
+    * validate the order after payment 
+    */
+    #[Route('/order/validate/{uuid}', name: 'app_OrderController_validate')]
+    public function validate(Request $request, string $uuid, OrderRepository $orderRepository, CartRepository $cartRepository): Response
+    {
+        $user = $this->getUser();
+
+        if ($user){
+            $order = $orderRepository->findByUuid($uuid);
+
+            $order->setSuccess(true);
+
+            $orderRepository->save($order,true);
+
+            $cart = $user->getCart();
+
+            $cart->removeAllBooks();
+
+            $cartRepository->save($cart,true);
+
+            return $this->render('order/order-validation.html.twig',[
+                'orderId' => $order->getId(),
+            ]);
+
+            
         } else {
             return $this->redirectToRoute('app_login');
         }

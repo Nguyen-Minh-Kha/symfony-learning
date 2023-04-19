@@ -2,7 +2,7 @@
 
 {% block title %}Orders history{% endblock %}
 
-{% block bodyTitle %} Every uers oders history {% endblock %}
+{% block bodyTitle %} Every users oders history {% endblock %}
 
 {% block listing %}
 
@@ -13,6 +13,8 @@
                 <th> User Id </th>
                 <th> Total </th>
                 <th> Ordered date </th>
+                <th> Payment </th>
+                <th> Actions </th>
             </tr>
         </thead>
         <tbody>
@@ -23,6 +25,8 @@
             <td> <a href="{{ path('app_AdminUserController_update', {id: order.user.id}) }}"> {{order.user.id}} </a> </td>
             <td> {{order.totalPrice}} </td>
             <td> {{order.orderedDate|date('d-m-Y')}} </td>
+            <td> {{order.success ? "success" : "failed" }} </td>
+            <td> </td>
         </tr>
         
     {% endfor %}

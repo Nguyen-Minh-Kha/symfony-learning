@@ -72,10 +72,11 @@ class CartController extends AbstractController
                 for ($i=0; $i < $numberOfBooksInCart->getLength(); $i++) { 
                     $total += $numberOfBooksInCart->numberOfBooks[$i] * $data->toArray()[$i]->getPrice();
                 }
-
-                $orderData = ['total' => $total, 'numberOfBooksInCart' => $numberOfBooksInCart->numberOfBooks];
                 
-                return $this->redirectToRoute('app_OrderController_new', ['data' => $orderData]);
+                return $this->redirectToRoute('app_OrderController_new', [
+                    'total' => $total,
+                    'numberOfBooksInCart' => $numberOfBooksInCart->numberOfBooks,
+                ]);
                 
             }
             

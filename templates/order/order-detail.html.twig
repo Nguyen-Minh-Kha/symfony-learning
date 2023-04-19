@@ -1,13 +1,13 @@
 {% extends 'list-book.html.twig' %}
 
-{% block title %}Order {{order.id}} {% endblock %}
+{% block title %}Order {{order.uuid}} {% endblock %}
 
 {% block bodyTitle %}
 
     {% if order is null %}
         This order doesn't exist 
     {% else %}
-        Order {{order.id}} 
+        Order {{order.uuid}} 
     {% endif %}
 
 {% endblock %}
@@ -27,6 +27,7 @@
                 <th> Price </th>
                 <th> NB </th>
                 <th> Total </th>
+                <th> Payment </th>
             </tr>
         </thead>
         <tbody>
@@ -50,6 +51,9 @@
                     <td id="bookPrice">{{ book.price }}</td>
                     <td>{{nb}}</td>
                     <td id="total">{{book.price*nb}}</td>
+                    <td> 
+                        {{order.success ? "success" : "failed" }}
+                    </td>
                 </tr>
 
 

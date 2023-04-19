@@ -39,6 +39,19 @@ class OrderRepository extends ServiceEntityRepository
         }
     }
 
+    /**
+    * find by uuid 
+    */
+    public function findByUuid(string $uuid): Order
+    {
+        $qb = $this->createQueryBuilder('o');
+
+        $qb ->where('o.uuid = :uuid')
+            ->setParameter('uuid', $uuid);
+
+        return $qb->getQuery()->getOneOrNullResult();
+    }
+
 //    /**
 //     * @return Order[] Returns an array of Order objects
 //     */

@@ -34,8 +34,11 @@ class Order
     #[ORM\ManyToMany(targetEntity: Book::class, inversedBy: 'orders')]
     private Collection $books;
 
-    #[ORM\Column(type: 'uuid')]
-    private ?Uuid $uuid = null;
+    #[ORM\Column(nullable: true)]
+    private ?bool $success = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $uuid = null;
 
     public function __construct()
     {
@@ -123,12 +126,24 @@ class Order
         return $this;
     }
 
-    public function getUuid(): ?Uuid
+    public function isSuccess(): ?bool
+    {
+        return $this->success;
+    }
+
+    public function setSuccess(?bool $success): self
+    {
+        $this->success = $success;
+
+        return $this;
+    }
+
+    public function getUuid(): ?string
     {
         return $this->uuid;
     }
 
-    public function setUuid(Uuid $uuid): self
+    public function setUuid(string $uuid): self
     {
         $this->uuid = $uuid;
 
