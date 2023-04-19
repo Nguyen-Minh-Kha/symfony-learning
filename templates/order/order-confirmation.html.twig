@@ -1,0 +1,60 @@
+{% extends 'list-book.html.twig' %}
+
+{% block title %}Order Confirmation{% endblock %}
+
+{% block bodyTitle %} Confirmation of your order {% endblock %}
+
+{% block listing %}
+
+{% if app.user.cart.books|length == 0 %}
+    <h2> your cart is currently empty you can check our <a href="{{path('app_BookController_searchBookList')}}">catalog</a> to add books in your cart.</h2>
+{% else %}
+
+    <table class="fl-table">
+        <thead>
+            <tr>
+                <th> Title </th>
+                <th> Author </th>
+                <th> Publishing House </th>
+                <th> Price </th>
+                <th> NB </th>
+                <th> Total </th>
+            </tr>
+        </thead>
+        <tbody>
+
+    {% for index,book in books %}
+        {% if index < numberOfBooksInCart|length %}
+            {% set nb = numberOfBooksInCart[index] %}
+
+                        <tr>
+                    <td>{{ book.title }}</td>
+                    <td>
+                    {% if book.author %}
+                        {{ book.author.name }}
+                    {% endif %}
+                    </td>
+                    <td>
+                    {% if book.publishinghouse %}
+                        {{ book.publishinghouse.name }}
+                    {% endif %}
+                    </td>
+                    <td id="bookPrice">{{ book.price }}</td>
+                    <td>{{nb}}</td>
+                    <td id="total">{{book.price*nb}}</td>
+                </tr>
+
+
+        {% endif %}
+    {% endfor %}
+        <tbody>
+    </table>
+
+    {% if app.user.cart.books|length > 0 %}
+    <h2>Total : {{total}} </h2> 
+    {% endif %}
+    {{form_start(form)}}
+    {{ form_widget(form.Purchase) }}
+    {{ form_end(form, {render_rest: false}) }}
+{% endif %}
+{% endblock %}

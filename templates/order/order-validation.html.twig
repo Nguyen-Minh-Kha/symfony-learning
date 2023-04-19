@@ -1,0 +1,11 @@
+{% extends 'list-book.html.twig' %}
+
+{% block title %}Order validation{% endblock %}
+
+{% block bodyTitle %} Order validation {% endblock %}
+
+{% block listing %}
+<h2> Your order has been validated </h2>
+<a class="btn btn-primary" href="{{ path('app_OrderController_showOrder',{id:orderId} )}}" role="button">Go to to my order</a>
+<a class="btn btn-primary" href="{{ path('app_OrderController_showHistory')}}" role="button">Go to to my order history</a>
+{% endblock %}

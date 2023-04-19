@@ -23,9 +23,14 @@
 					{{ genre.name }},
 				{% endfor %}
 			</li>
+			<li>
+				Description:
+				{{book.description ? book.description : ''}}
+			</li>
             <li>
 				price: 
 				{{ book.price }} €
 			</li>
 		</ul</div>
+		<a class="btn btn-primary" href="{{ path('app_CartController_addBook', {id: book.id}) }}" role="button">Add to cart</a>
 	{% endblock %}

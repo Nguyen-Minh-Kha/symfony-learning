@@ -5,6 +5,20 @@
 {% block body %}
     <h1>Edit my profile</h1>
 <div> 
-    {{ form(form) }}
+
+    <div> 
+        <img src="{{app.user.imageUrl}}" width="128" height="128">
+        <h2>Email: <span>{{app.user.email}} </span> </h2>
+    </div>
+
+    <div> 
+        <button type="button" class="btn btn-primary" id="toggle-btn" data-toggle="collapse" data-target="#toggle-example" aria-expanded="false" aria-controls="collapseExample">
+            Edit my profile
+        </button>
+
+        <div id="toggle-example" class="collapse">
+            {{ form(form)}}
+        </div>
+    </div>
 </div>
 {% endblock %}

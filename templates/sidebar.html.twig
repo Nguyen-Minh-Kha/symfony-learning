@@ -34,6 +34,24 @@
 			</li>
 
 			<li class="has-subnav">
+				<a href="{{ path('app_CartController_displayCart') }}">
+					<i class="fa-solid fa-cart-shopping fa-2x"></i>
+					<span class="nav-text">
+						My cart
+					</span>
+				</a>
+			</li>
+
+			<li class="has-subnav">
+				<a href="{{ path('app_OrderController_showHistory') }}">
+					<i class="fa-solid fa-history fa-2x" aria-hidden="true"></i>
+					<span class="nav-text">
+						Orders history
+					</span>
+				</a>
+			</li>
+
+			<li class="has-subnav">
 				<a href="{{ path('app_logout') }}">
 					<i class="fa-solid fa-right-from-bracket fa-2x"></i>
 					<span class="nav-text">

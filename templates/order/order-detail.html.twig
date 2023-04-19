@@ -1,0 +1,70 @@
+{% extends 'list-book.html.twig' %}
+
+{% block title %}Order {{order.uuid}} {% endblock %}
+
+{% block bodyTitle %}
+
+    {% if order is null %}
+        This order doesn't exist 
+    {% else %}
+        Order {{order.uuid}} 
+    {% endif %}
+
+{% endblock %}
+
+{% block listing %}
+
+    {% if order is null %}
+        <h1> This order doesn't exist </h1>
+    {% else %}
+
+    <table class="fl-table">
+        <thead>
+            <tr>
+                <th> Title </th>
+                <th> Author </th>
+                <th> Publishing House </th>
+                <th> Price </th>
+                <th> NB </th>
+                <th> Total </th>
+                <th> Payment </th>
+            </tr>
+        </thead>
+        <tbody>
+
+    {% for index,book in order.books %}
+        {% if index < order.numberOfBooksInCart|length %}
+            {% set nb = order.numberOfBooksInCart[index] %}
+
+                        <tr>
+                    <td>{{ book.title }}</td>
+                    <td>
+                    {% if book.author %}
+                        {{ book.author.name }}
+                    {% endif %}
+                    </td>
+                    <td>
+                    {% if book.publishinghouse %}
+                        {{ book.publishinghouse.name }}
+                    {% endif %}
+                    </td>
+                    <td id="bookPrice">{{ book.price }}</td>
+                    <td>{{nb}}</td>
+                    <td id="total">{{book.price*nb}}</td>
+                    <td> 
+                        {{order.success ? "success" : "failed" }}
+                    </td>
+                </tr>
+
+
+        {% endif %}
+    {% endfor %}
+        <tbody>
+    </table>
+
+    {% if order.books|length > 0 %}
+    <h2>Total : {{order.totalPrice}} </h2> 
+    {% endif %}
+    <a class="btn btn-primary" href="{{ path('app_OrderController_showHistory')}}" role="button">Back to my history</a>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,36 @@
+{% extends 'list-book.html.twig' %}
+
+{% block title %}Orders history{% endblock %}
+
+{% block bodyTitle %} Your orders history {% endblock %}
+
+{% block listing %}
+
+{% if app.user.orders|length == 0 %}
+    <h2> You currently don't have any order </h2>
+{% else %}
+
+    <table class="fl-table">
+        <thead>
+            <tr>
+                <th> Id </th>
+                <th> Total </th>
+                <th> Ordered date </th>
+                <th> Payment </th>
+            </tr>
+        </thead>
+        <tbody>
+
+    {% for order in orders %}
+        <tr>
+            <td><a href="{{path('app_OrderController_showOrder',{id:order.id} )}}"> {{ order.uuid }} </a> </td>
+            <td>{{order.totalPrice}}</td>
+            <td>{{order.orderedDate|date('d-m-Y')}}</td>
+            <td> {{order.success ? "success" : "failed" }} </td>
+        </tr>
+        
+    {% endfor %}
+        <tbody>
+    </table>
+{% endif %}
+{% endblock %}

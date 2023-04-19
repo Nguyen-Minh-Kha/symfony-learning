@@ -1,0 +1,79 @@
+{% extends 'list-book.html.twig' %}
+
+{% block title %}Order {{order.id}}{% endblock %}
+
+{% block bodyTitle %} Order {{order.uuid}} {% endblock %}
+
+{% block listing %}
+
+{% if order.books|length == 0 %}
+    <h2> This user's order is Empty </h2>
+{% else %}
+
+    <table class="fl-table">
+        <thead>
+            <tr>
+                <th> Title </th>
+                <th> Author </th>
+                <th> Publishing House </th>
+                <th> Price </th>
+                <th> NB </th>
+                <th> Actions </th>
+                <th> Total </th>
+            </tr>
+        </thead>
+        <tbody>
+        {{form_start(form)}}
+    {% for index,book in order.books %}
+        {% if index < form.numberOfBooks|length %}
+        
+        {% set field = form.numberOfBooks[index] %}
+        
+            <tr>
+                <td>{{ book.title }}</td>
+                <td>
+                {% if book.author %}
+                    {{ book.author.name }}
+                {% endif %}
+                </td>
+                <td>
+                {% if book.publishinghouse %}
+                    {{ book.publishinghouse.name }}
+                {% endif %}
+                </td>
+                <td id="bookPrice">{{ book.price }}</td>
+                <td>
+                
+                 <input type="number" name="{{field.vars.full_name}}" value="{{field.vars.value}}" id="number" min="1"> 
+                 
+                 </td>
+                <td> 
+                {# TODO #}
+                    <a href="" title="Delete from cart">
+                    <i class="fa-solid fa-trash"></i>
+                    </a>
+                </td>
+                <td id="total">
+
+                </td>
+            </tr>
+        {% endif %}
+    {% endfor %}
+        <tbody>
+    </table>
+
+    {% if app.user.cart.books|length > 0 %}
+    <h2>Total : <span id="cartTotal"></span> </h2> 
+    {% endif %}
+
+    {{ form_widget(form.Checkout,{'label': 'save'}) }}
+    {{ form_end(form, {render_rest: false}) }}
+{% endif %}
+
+{# TODO #}
+<a class="btn btn-primary" href="" role="button">Add more books</a>
+
+<script src="/cart.js"> </script>
+
+{% endblock %}
+
