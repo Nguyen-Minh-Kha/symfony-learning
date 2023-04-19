@@ -21,7 +21,7 @@
 
     {% for order in orders %}
         <tr>
-            <td> <a href="{{path('app_OrderController_showOrder',{id:order.id} )}}"> {{ order.id }} </a> </td>
+            <td> <a href="{{path('app_AdminOrderController_update',{id:order.id} )}}"> {{ order.id }} </a> </td>
             <td> <a href="{{ path('app_AdminUserController_update', {id: order.user.id}) }}"> {{order.user.id}} </a> </td>
             <td> {{order.totalPrice}} </td>
             <td> {{order.orderedDate|date('d-m-Y')}} </td>

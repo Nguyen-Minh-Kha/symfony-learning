@@ -25,5 +25,15 @@ class NumberOfBooksInCart {
             return 0;
         }
     }
+
+    /**
+    * set the number with the given array 
+    */
+    public function setNumberOfBooks(array $numberOfBooks)
+    {
+        foreach($numberOfBooks as $number){
+            $this->initialize($number);
+        }
+    }
 }
 
