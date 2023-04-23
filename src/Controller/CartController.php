@@ -20,13 +20,23 @@ class CartController extends AbstractController
     #[Route('/cart/{id}/add', name: 'app_CartController_addBook')]
     public function add(CartRepository $cartRepository, Book $book): Response
     {
-        $cart = $this->getUser()->getCart();
+        $user = $this->getUser();
 
-        $cart->addBook($book);
+        if($user){
 
-        $cartRepository->save($cart, true);
+            $cart = $user->getCart();
 
-        return $this->redirectToRoute('app_CartController_displayCart');
+            $cart->addBook($book);
+
+            $cartRepository->save($cart, true);
+
+            return $this->redirectToRoute('app_CartController_displayCart');
+
+        } else {
+            return $this->redirectToRoute('app_login');
+        }
+
+        
     }
 
     /**
