@@ -35,7 +35,6 @@ security:
 
     access_control:
         - { path: '^/admin', roles: ROLE_ADMIN }
-        - { path: ^/catalog, roles: [ROLE_USER, ROLE_ADMIN] }
         - { path: ^/stripe, roles: [ROLE_USER, ROLE_ADMIN] }
         - { path: ^/order, roles: [ROLE_USER, ROLE_ADMIN] }
 
